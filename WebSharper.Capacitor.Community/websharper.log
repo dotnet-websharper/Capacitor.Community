@@ -1,10 +1,10 @@
-2024-09-02 14:27:00.5057|DEBUG|Program|location of wsfscservice is: C:\Users\souva\.nuget\packages\websharper.fsharp\8.0.0.473-beta1\tools\net8.0\win-x64 (server side)
-2024-09-02 14:27:00.5191|DEBUG|Program|pipename is: C:\Users\souva\.nuget\packages\websharper.fsharp\8.0.0.473-beta1\tools\net8.0\win-x64 (server side)
-2024-09-02 14:27:00.5191|DEBUG|Program|Compiling D:\WebSharper\Capacitor.Community\Capacitor.community\Capacitor.Community.fsproj
-2024-09-02 14:27:03.3158|TRACE|Program|Server sends: n: F# compilation: 00:00:02.8512183
-2024-09-02 14:27:12.3044|TRACE|Program|Server sends: n: Loading IExtension implementation: 00:00:08.9937262
-2024-09-02 14:27:12.5432|TRACE|Program|Server sends: n: Getting Assembly definition: 00:00:00.2388139
-2024-09-02 14:27:12.7859|TRACE|Program|Server sends: n: Built assembly: 00:00:00.2427099
-2024-09-02 14:27:13.1305|TRACE|Program|Server sends: n: Creating WebSharper metadata: 00:00:00.3446593
-2024-09-02 14:27:13.1741|TRACE|Program|Server sends: n: Writing final dll: 00:00:00.0435557
-2024-09-02 14:27:13.1807|TRACE|Program|Server sends: x: 0
+2024-09-02 14:59:59.7390|DEBUG|Program|location of wsfscservice is: C:\Users\souva\.nuget\packages\websharper.fsharp\8.0.0.473-beta1\tools\net8.0\win-x64 (server side)
+2024-09-02 14:59:59.7390|DEBUG|Program|pipename is: C:\Users\souva\.nuget\packages\websharper.fsharp\8.0.0.473-beta1\tools\net8.0\win-x64 (server side)
+2024-09-02 14:59:59.7390|DEBUG|Program|Compiling D:\WebSharper\Capacitor.Community\WebSharper.Capacitor.Community\WebSharper.Capacitor.Community.fsproj
+2024-09-02 15:00:00.3421|TRACE|Program|Server sends: n: F# compilation: 00:00:00.6041193
+2024-09-02 15:00:00.3955|TRACE|Program|Server sends: n: Loading IExtension implementation: 00:00:00.0534644
+2024-09-02 15:00:00.3994|TRACE|Program|Server sends: n: Getting Assembly definition: 00:00:00.0038486
+2024-09-02 15:00:00.5146|TRACE|Program|Server sends: n: Built assembly: 00:00:00.1151947
+2024-09-02 15:00:00.5146|TRACE|Program|Server sends: n: Creating WebSharper metadata: 00:00:00.0035986
+2024-09-02 15:00:00.5252|TRACE|Program|Server sends: n: Writing final dll: 00:00:00.0069699
+2024-09-02 15:00:00.5252|TRACE|Program|Server sends: x: 0

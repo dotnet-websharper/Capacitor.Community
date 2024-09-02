@@ -1,24 +1,24 @@
-2024-09-02 14:27:58.6887|DEBUG|Program|location of wsfscservice is: C:\Users\souva\.nuget\packages\websharper.fsharp\8.0.0.473-beta1\tools\net8.0\win-x64 (server side)
-2024-09-02 14:27:58.6887|DEBUG|Program|pipename is: C:\Users\souva\.nuget\packages\websharper.fsharp\8.0.0.473-beta1\tools\net8.0\win-x64 (server side)
-2024-09-02 14:27:58.6887|DEBUG|Program|Compiling D:\WebSharper\Capacitor.Community\Capacitor.community.Sample\Capacitor.Community.Sample.fsproj
-2024-09-02 14:27:59.7632|TRACE|Program|Server sends: n: F# compilation: 00:00:01.0747358
-2024-09-02 14:28:01.0630|TRACE|Program|Server sends: n: Checking project: 00:00:01.3005992
-2024-09-02 14:28:01.0630|TRACE|Program|Server sends: n: Waiting on merged metadata: 00:00:00.0010250
-2024-09-02 14:28:01.2958|TRACE|Program|Server sends: n: Parsing with FCS: 00:00:00.2317215
-2024-09-02 14:28:01.2958|TRACE|Program|Server sends: n: Analyzing function arguments: 00:00:00.0025275
-2024-09-02 14:28:01.3425|TRACE|Program|Server sends: n: Resolving names: 00:00:00.0442224
-2024-09-02 14:28:01.5768|TRACE|Program|Server sends: n: WebSharper translation: 00:00:00.2342682
-2024-09-02 14:28:01.5893|TRACE|Program|Server sends: n: Source position transformations: 00:00:00.0125004
-2024-09-02 14:28:01.6332|TRACE|Program|Server sends: n: Packaging assembly: 00:00:00.0439277
-2024-09-02 14:28:01.7113|TRACE|Program|Server sends: n: Computing metadata: 00:00:00.0780690
-2024-09-02 14:28:01.7444|TRACE|Program|Server sends: n: Writing reexports root.js: 00:00:00.0331296
-2024-09-02 14:28:01.7909|TRACE|Program|Server sends: n: Writing Capacitor.Community.Sample.Client.js: 00:00:00.0465168
-2024-09-02 14:28:01.7909|TRACE|Program|Server sends: n: Writing $StartupCode_Client.js: 00:00:00.0008249
-2024-09-02 14:28:01.7909|TRACE|Program|Server sends: n: Writing $Generated.js: 00:00:00.0006632
-2024-09-02 14:28:01.7909|TRACE|Program|Server sends: n: Writing $EntryPoint.js: 00:00:00.0005402
-2024-09-02 14:28:01.8154|TRACE|Program|Server sends: n: Writing .d.ts files: 00:00:00.0224877
-2024-09-02 14:28:01.8154|TRACE|Program|Server sends: n: Hashing resources: 00:00:00.0023706
-2024-09-02 14:28:02.1240|TRACE|Program|Server sends: n: Serializing metadata: 00:00:00.3061610
-2024-09-02 14:28:02.1565|TRACE|Program|Server sends: n: Writing resources into assembly: 00:00:00.0325252
-2024-09-02 14:28:02.3542|TRACE|Program|Server sends: n: Bundling: 00:00:00.1977343
-2024-09-02 14:28:02.3542|TRACE|Program|Server sends: x: 0
+2024-09-02 15:00:01.7537|DEBUG|Program|location of wsfscservice is: C:\Users\souva\.nuget\packages\websharper.fsharp\8.0.0.473-beta1\tools\net8.0\win-x64 (server side)
+2024-09-02 15:00:01.7537|DEBUG|Program|pipename is: C:\Users\souva\.nuget\packages\websharper.fsharp\8.0.0.473-beta1\tools\net8.0\win-x64 (server side)
+2024-09-02 15:00:01.7537|DEBUG|Program|Compiling D:\WebSharper\Capacitor.Community\WebSharper.Capacitor.Community.Sample\WebSharper.Capacitor.Community.Sample.fsproj
+2024-09-02 15:00:02.6570|TRACE|Program|Server sends: n: F# compilation: 00:00:00.9043183
+2024-09-02 15:00:03.1327|TRACE|Program|Server sends: n: Checking project: 00:00:00.4757708
+2024-09-02 15:00:03.1327|TRACE|Program|Server sends: n: Waiting on merged metadata: 00:00:00.0014427
+2024-09-02 15:00:03.1558|TRACE|Program|Server sends: n: Parsing with FCS: 00:00:00.0216415
+2024-09-02 15:00:03.1558|TRACE|Program|Server sends: n: Analyzing function arguments: 00:00:00.0011093
+2024-09-02 15:00:03.1558|TRACE|Program|Server sends: n: Resolving names: 00:00:00.0007333
+2024-09-02 15:00:03.1683|TRACE|Program|Server sends: n: WebSharper translation: 00:00:00.0106655
+2024-09-02 15:00:03.1683|TRACE|Program|Server sends: n: Source position transformations: 00:00:00.0020430
+2024-09-02 15:00:03.1683|TRACE|Program|Server sends: n: Packaging assembly: 00:00:00.0007584
+2024-09-02 15:00:03.2227|TRACE|Program|Server sends: n: Computing metadata: 00:00:00.0516541
+2024-09-02 15:00:03.2252|TRACE|Program|Server sends: n: Writing reexports root.js: 00:00:00.0024413
+2024-09-02 15:00:03.2252|TRACE|Program|Server sends: n: Writing WebSharper.Capacitor.Community.Sample.Client.js: 00:00:00.0012848
+2024-09-02 15:00:03.2252|TRACE|Program|Server sends: n: Writing $StartupCode_Client.js: 00:00:00.0006163
+2024-09-02 15:00:03.2252|TRACE|Program|Server sends: n: Writing $Generated.js: 00:00:00.0003499
+2024-09-02 15:00:03.2252|TRACE|Program|Server sends: n: Writing $EntryPoint.js: 00:00:00.0002906
+2024-09-02 15:00:03.2252|TRACE|Program|Server sends: n: Writing .d.ts files: 00:00:00.0009141
+2024-09-02 15:00:03.2252|TRACE|Program|Server sends: n: Hashing resources: 00:00:00.0013347
+2024-09-02 15:00:03.3356|TRACE|Program|Server sends: n: Serializing metadata: 00:00:00.1056441
+2024-09-02 15:00:03.3356|TRACE|Program|Server sends: n: Writing resources into assembly: 00:00:00.0057029
+2024-09-02 15:00:03.4654|TRACE|Program|Server sends: n: Bundling: 00:00:00.1240438
+2024-09-02 15:00:03.4654|TRACE|Program|Server sends: x: 0

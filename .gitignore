@@ -13,11 +13,11 @@
 .vscode/
 .idea/
 *.userwebsharper.log
-/Capacitor*/bin
-/Capacitor*/obj
-/Capacitor*/node*
-/Capacitor*/Properties
-/Capacitor*/wwwroot/Content
-/Capacitor*/wwwroot/dist
-/Capacitor*/.vs
+/*/bin
+/*/obj
+/*/node*
+/*/Properties
+/*/wwwroot/Content
+/*/wwwroot/dist
+/*/.vs
 
