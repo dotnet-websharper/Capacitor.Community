@@ -4,7 +4,7 @@ open Microsoft.Extensions.Hosting
 open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.DependencyInjection
 open WebSharper.AspNetCore
-open Capacitor.Community.Sample
+open WebSharper.Capacitor.Community.Sample
 
 [<EntryPoint>]
 let main args =
