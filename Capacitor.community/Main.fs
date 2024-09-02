@@ -1,4 +1,4 @@
-﻿namespace Capacitor.community
+﻿namespace Capacitor.Community
 
 open WebSharper
 open WebSharper.JavaScript

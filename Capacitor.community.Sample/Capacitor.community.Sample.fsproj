@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Capacitor.community\Capacitor.community.fsproj" />
+    <ProjectReference Include="..\Capacitor.community\Capacitor.Community.fsproj" />
   </ItemGroup>
 
   <ItemGroup>
