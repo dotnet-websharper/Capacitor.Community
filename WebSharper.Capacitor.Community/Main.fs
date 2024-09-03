@@ -11,6 +11,14 @@ module Definition =
             Class "PluginListenerHandle"
             |+> Instance ["remove" => T<unit> ^-> T<Promise<unit>>]
 
+        let PermissionState = 
+            Pattern.EnumStrings "PermissionState" [
+                "prompt"
+                "prompt-with-rationale"
+                "granted"
+                "denied"
+            ]
+
     [<AutoOpen>]
     module FacebookLogin = 
         let AccessToken =
@@ -985,6 +993,340 @@ module Definition =
                 "removeAllListener" => T<unit> ^-> T<Promise<unit>>
             ]
 
+    [<AutoOpen>]
+    module Contacts = 
+        let PhoneType =
+            Pattern.EnumInlines "PhoneType" [
+                "Home", "home"
+                "Work", "work"
+                "Other", "other"
+                "Custom", "custom"
+                "Mobile", "mobile"
+                "FaxWork", "fax_work"
+                "FaxHome", "fax_home"
+                "Pager", "pager"
+                "Callback", "callback"
+                "Car", "car"
+                "CompanyMain", "company_main"
+                "Isdn", "isdn"
+                "Main", "main"
+                "OtherFax", "other_fax"
+                "Radio", "radio"
+                "Telex", "telex"
+                "TtyTdd", "tty_tdd"
+                "WorkMobile", "work_mobile"
+                "WorkPager", "work_pager"
+                "Assistant", "assistant"
+                "Mms", "mms"
+            ]
+
+        let EmailType =
+            Pattern.EnumInlines "EmailType" [
+                "Home", "home"
+                "Work", "work"
+                "Other", "other"
+                "Custom", "custom"
+                "Mobile", "mobile"
+            ]
+
+        let PostalAddressType =
+            Pattern.EnumInlines "PostalAddressType" [
+                "Home", "home"
+                "Work", "work"
+                "Other", "other"
+                "Custom", "custom"
+            ]
+
+        let PermissionStatus = 
+            Pattern.Config "PermissionStatus" {
+                Required = []
+                Optional = [
+                    "contacts", PermissionState.Type
+                ]
+            }
+
+        let NamePayload = 
+            Pattern.Config "NamePayload" {
+                Required = []
+                Optional = [
+                    "display", T<string>
+                    "given", T<string>
+                    "middle", T<string>
+                    "family", T<string>
+                    "prefix", T<string>
+                    "suffix", T<string>
+                ]
+            }
+
+        let OrganizationPayload = 
+            Pattern.Config "OrganizationPayload" {
+                Required = []
+                Optional = [
+                    "company", T<string>
+                    "jobTitle", T<string>
+                    "department", T<string>
+                ]
+            }
+
+        let BirthdayPayload = 
+            Pattern.Config "irthdayPayload" {
+                Required = []
+                Optional = [
+                    "day", T<int>
+                    "month", T<int>
+                    "year", T<int>
+                ]
+            }
+
+        let PhonePayload = 
+            Pattern.Config "PhonePayload" {
+                Required = []
+                Optional = [
+                    "type", PhoneType.Type
+                    "label", T<string>
+                    "isPrimary", T<bool>
+                    "number", T<string>
+                ]
+            }
+
+        let EmailPayload = 
+            Pattern.Config "EmailPayload" {
+                Required = []
+                Optional = [
+                    "type", EmailType.Type
+                    "label", T<string>
+                    "isPrimary", T<bool>
+                    "address", T<string>
+                ]
+            }
+
+        let PostalAddressPayload = 
+            Pattern.Config "PostalAddressPayload" {
+                Required = []
+                Optional = [
+                    "type", PostalAddressType.Type
+                    "label", T<string>
+                    "isPrimary", T<bool>
+                    "street", T<string>
+                    "neighborhood", T<string>
+                    "city", T<string>
+                    "region", T<string>
+                    "postcode", T<string>
+                    "country", T<string>
+                ]
+            }
+
+        let ImagePayload = 
+            Pattern.Config "ImagePayload" {
+                Required = []
+                Optional = [
+                    "base64String", T<string>
+                ]
+            }
+
+        let ContactPayload = 
+            Pattern.Config "ContactPayload" {
+                Required = []
+                Optional = [
+                    "contactId", T<string>
+                    "name", NamePayload.Type
+                    "organization", OrganizationPayload.Type
+                    "birthday", BirthdayPayload.Type
+                    "note", T<string>
+                    "phones", !| PhonePayload
+                    "emails", !| EmailPayload
+                    "urls", !| T<string>
+                    "postalAddresses", !| PostalAddressPayload
+                    "image", ImagePayload.Type
+                ]
+            }
+
+        let Projection = 
+            Pattern.Config "Projection" {
+                Required = []
+                Optional = [
+                    "name", T<bool>
+                    "organization", T<bool>
+                    "birthday", T<bool>
+                    "note", T<bool>
+                    "phones", T<bool>
+                    "emails", T<bool>
+                    "urls", T<bool>
+                    "postalAddresses", T<bool>
+                    "image", T<bool>
+                ]
+            }
+
+        let GetContactResult = 
+            Pattern.Config "GetContactResult" {
+                Required = []
+                Optional = [
+                    "contact", ContactPayload.Type
+                ]
+            }
+
+        let GetContactOptions = 
+            Pattern.Config "GetContactOptions" {
+                Required = []
+                Optional = [
+                    "contactId", T<string>
+                    "projection", Projection.Type
+                ]
+            }
+
+        let GetContactsResult = 
+            Pattern.Config "GetContactsResult" {
+                Required = []
+                Optional = [
+                    "contact", !| ContactPayload
+                ]
+            }
+
+        let GetContactsOptions = 
+            Pattern.Config "GetContactsOptions" {
+                Required = []
+                Optional = [
+                    "projection", Projection.Type
+                ]
+            }
+
+        let CreateContactResult = 
+            Pattern.Config "CreateContactResult" {
+                Required = []
+                Optional = [
+                    "contactId", T<string>
+                ]
+            }
+
+        let NameInput = 
+            Pattern.Config "NameInput" {
+                Required = []
+                Optional = [
+                    "given", T<string>
+                    "middle", T<string>
+                    "family", T<string>
+                    "prefix", T<string>
+                    "suffix", T<string>
+                ]
+            }
+
+        let OrganizationInput = 
+            Pattern.Config "OrganizationInput" {
+                Required = []
+                Optional = [
+                    "company", T<string>
+                    "jobTitle", T<string>
+                    "department", T<string>
+                ]
+            }
+
+        let BirthdayInput = 
+            Pattern.Config "BirthdayInput" {
+                Required = []
+                Optional = [
+                    "day", T<int>
+                    "month", T<int>
+                    "year", T<int>
+                ]
+            }
+
+        let PhoneInput = 
+            Pattern.Config "PhoneInput" {
+                Required = []
+                Optional = [
+                    "type", PhoneType.Type
+                    "label", T<string>
+                    "isPrimary", T<bool>
+                    "number", T<string>
+                ]
+            }
+
+        let EmailInput = 
+            Pattern.Config "EmailInput" {
+                Required = []
+                Optional = [
+                    "type", EmailType.Type
+                    "label", T<string>
+                    "isPrimary", T<bool>
+                    "address", T<string>
+                ]
+            }
+
+        let PostalAddressInput = 
+            Pattern.Config "PostalAddressInput" {
+                Required = []
+                Optional = [
+                    "type", PostalAddressType.Type
+                    "label", T<string>
+                    "isPrimary", T<bool>
+                    "street", T<string>
+                    "neighborhood", T<string>
+                    "city", T<string>
+                    "region", T<string>
+                    "postcode", T<string>
+                    "country", T<string>
+                ]
+            }
+
+        let ContactInput = 
+            Pattern.Config "ContactInput" {
+                Required = []
+                Optional = [
+                    "name", NameInput.Type
+                    "organization", OrganizationInput.Type
+                    "birthday", BirthdayInput.Type
+                    "note", T<string>
+                    "phones", !| PhoneInput
+                    "coemailsntactId", !| EmailInput
+                    "urls", !| T<string>
+                    "postalAddresses", !| PostalAddressInput
+                ]
+            }
+
+        let CreateContactOptions = 
+            Pattern.Config "CreateContactOptions" {
+                Required = []
+                Optional = [
+                    "contact", ContactInput.Type
+                ]
+            }
+
+        let DeleteContactOptions = 
+            Pattern.Config "DeleteContactOptions" {
+                Required = []
+                Optional = [
+                    "contactId", T<string> 
+                ]
+            }
+
+        let PickContactResult = 
+            Pattern.Config "PickContactResult" {
+                Required = []
+                Optional = [
+                    "contact", ContactPayload.Type
+                ]
+            }
+
+        let PickContactOptions = 
+            Pattern.Config "PickContactOptions" {
+                Required = []
+                Optional = [
+                    "projection", Projection.Type
+                ]
+            }
+
+        let ContactsPlugin =
+            Class "ContactsPlugin"
+            |+> Instance [
+                "checkPermissions" => T<unit> ^-> T<Promise<_>>[PermissionStatus]
+                "requestPermissions" => T<unit> ^-> T<Promise<_>>[PermissionStatus]
+                "getContact" => GetContactOptions?options ^-> T<Promise<_>>[GetContactResult]
+                "getContacts" => GetContactsOptions?options ^-> T<Promise<_>>[GetContactsResult]
+                "createContact" => CreateContactOptions?options ^-> T<Promise<_>>[CreateContactResult]
+                "deleteContact" => DeleteContactOptions?options ^-> T<Promise<unit>>
+                "pickContact" => PickContactOptions?options ^-> T<Promise<_>>[PickContactResult]
+            ]
+
     let CapacitorCommunity = 
         Class "Capacitor.Community"
         |+> Static [
@@ -998,17 +1340,21 @@ module Definition =
             |> Import "KeepAwake" "@capacitor-community/keep-awake"
             "GoogleMaps" =? GoogleMapsPlugin
             |> Import "GoogleMaps" "@capacitor-community/google-maps"
+            "Contacts" =? ContactsPlugin
+            |> Import "Contacts" "@capacitor-community/contacts"
         ]
 
     let Assembly =
         Assembly [
             Namespace "Websharper.Capacitor.Community" [
+                PermissionState
                 PluginListenerHandle
                 FacebookLoginPlugin
                 StripePlugin
                 PrivacyScreenPlugin
                 KeepAwakePlugin
                 GoogleMapsPlugin
+                ContactsPlugin
             ]
             Namespace "Websharper.Capacitor.Community.FacebookLogin" [
                 FacebookConfiguration; LoginOptions; FacebookLoginResponse; FacebookCurrentAccessTokenResponse; ProfileOptions; AccessToken
@@ -1034,6 +1380,12 @@ module Definition =
                 DidDragMarkerResult; DidBeginDraggingMarkerResult; DidTapMarkerResult; DidLongPressMapResult; DidTapMapResult; DidCloseInfoWindowResult
                 DidTapInfoWindowResult; DidRequestElementFromPointResult; Point; DefaultEventWithPreventDefaultOptions; DefaultEventOptions; 
                 ElementFromPointResultOptions; AddMarkersResult; AddMarkersOptions; MarkerInputEntry; RemoveMarkerOptions; DidEndDraggingMarkerResult
+            ]
+            Namespace "Websharper.Capacitor.Community.Contacts" [
+                PickContactOptions; PickContactResult; DeleteContactOptions; CreateContactOptions; ContactInput; PostalAddressInput; EmailInput
+                PhoneInput; BirthdayInput; OrganizationInput; NameInput; CreateContactResult; GetContactsOptions; GetContactsResult; GetContactOptions
+                GetContactResult; Projection; ContactPayload; ImagePayload; PostalAddressPayload; EmailPayload; PhonePayload; BirthdayPayload
+                OrganizationPayload; NamePayload; PhoneType; EmailType; PostalAddressType; PermissionStatus
             ]
         ]
 
