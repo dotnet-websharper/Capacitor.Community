@@ -414,6 +414,68 @@ module Definition =
                 ]
             }
 
+    [<AutoOpen>]
+    module PrivacyScreen = 
+        let ContentMode = 
+            Pattern.EnumStrings "ContentMode" [
+                "center"
+                "scaleToFill"
+                "scaleAspectFit"
+                "scaleAspectFill"
+            ]
+
+        let PrivacyScreenConfig = 
+            Pattern.Config "PrivacyScreenConfig" {
+                Required = []
+                Optional = [
+                    "enable", T<bool> 
+                    "imageName", T<string>
+                    "contentMode", ContentMode.Type
+                    "preventScreenshots", T<bool>
+                ]
+            }
+
+        let PrivacyScreenPlugin =
+            Class "PrivacyScreenPlugin"
+            |+> Instance [
+                "enable" => T<unit> ^-> T<Promise<unit>>
+                "disable" => T<unit> ^-> T<Promise<unit>>
+                "addListener" => T<string>?eventName * (T<unit> ^-> T<unit>)?listenerFunc ^-> T<Promise<_>>[PluginListenerHandle]
+                |> WithComment "Listen to 'screenRecordingStarted', 'screenRecordingStopped', 'screenshotTaken' events"
+                "removeAllListeners" => T<unit> ^-> T<Promise<unit>>
+            ]
+
+        let PluginsConfig =
+            Pattern.Config "PluginsConfig" {
+                Required = []
+                Optional = [
+                    "privacyScreen", PrivacyScreenConfig.Type
+                ]
+            }
+
+    [<AutoOpen>]
+    module KeepAwake = 
+        let IsSupportedResult =
+            Pattern.Config "IsSupportedResult" {
+                Required = []
+                Optional = ["isSupported", T<bool>]
+            }
+
+        let IsKeptAwakeResult =
+            Pattern.Config "IsKeptAwakeResult" {
+                Required = []
+                Optional = ["isKeptAwake", T<bool>]
+            }
+
+        let KeepAwakePlugin =
+            Class "KeepAwakePlugin"
+            |+> Instance [
+                "keepAwake" => T<unit> ^-> T<Promise<unit>>
+                "allowSleep" => T<unit> ^-> T<Promise<unit>>
+                "isSupported" => T<unit> ^-> T<Promise<_>>[IsSupportedResult]
+                "isKeptAwake" => T<unit> ^-> T<Promise<_>>[IsKeptAwakeResult]
+            ]
+
     let CapacitorCommunity = 
         Class "Capacitor.Community"
         |+> Static [
@@ -421,6 +483,10 @@ module Definition =
             |> Import "FacebookLogin" "@capacitor-community/facebook-login"
             "Stripe" =? StripePlugin
             |> Import "Stripe" "@capacitor-community/stripe"
+            "PrivacyScreen" =? PrivacyScreenPlugin
+            |> Import "PrivacyScreen" "@capacitor-community/privacy-screen"
+            "KeepAwake" =? KeepAwakePlugin
+            |> Import "KeepAwake" "@capacitor-community/keep-awake"
         ]
 
     let Assembly =
@@ -429,6 +495,8 @@ module Definition =
                 PluginListenerHandle
                 FacebookLoginPlugin
                 StripePlugin
+                PrivacyScreenPlugin
+                KeepAwakePlugin
             ]
             Namespace "Websharper.Capacitor.Community.FacebookLogin" [
                 FacebookConfiguration; LoginOptions; FacebookLoginResponse; FacebookCurrentAccessTokenResponse; ProfileOptions; AccessToken
@@ -439,6 +507,12 @@ module Definition =
                 CreateGooglePayOption; DidSelectShippingContact; ShippingContact; CreateApplePayOption; ShippingContactType; PaymentSummaryType
                 PaymentFlowResultInterface; AddressCollectionMode; CollectionMode; GooglePayResultInterface; ApplePayResultInterface; PaymentSheetEventsEnum
                 GooglePayEventsEnum; ApplePayEventsEnum; PresentApplePayResult; StyleType; PaymentSheetResultInterface; PaymentFlowEventsEnum
+            ]
+            Namespace "Websharper.Capacitor.Community.PrivacyScreen" [
+                PluginsConfig; PrivacyScreenConfig; ContentMode
+            ]
+            Namespace "Websharper.Capacitor.Community.KeepAwake" [
+                IsKeptAwakeResult; IsSupportedResult
             ]
         ]
 
