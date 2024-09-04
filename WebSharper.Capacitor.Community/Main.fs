@@ -2056,9 +2056,301 @@ module Definition =
                 "requestReview" => T<unit> ^-> T<Promise<unit>>
             ]
 
+    [<AutoOpen>]
+    module VideoRecorder = 
+        let DropShadow =
+            Pattern.Config "DropShadow" {
+                Required = []
+                Optional = [
+                    "opacity", T<float>
+                    "radius", T<float>
+                    "color", T<string>
+                ]
+            }
+
+        let StackPosition = 
+            Pattern.EnumStrings "StackPosition" ["front"; "back"]
+
+        let VideoRecorderPreviewFrame =
+            Pattern.Config "VideoRecorderPreviewFrame" {
+                Required = []
+                Optional = [
+                    "id", T<string>
+                    "stackPosition", StackPosition.Type
+                    "x", T<int>
+                    "y", T<int>
+                    "width", T<int> + T<string> 
+                    "height", T<int> + T<string>
+                    "borderRadius", T<int>
+                    "dropShadow", DropShadow.Type
+                ]
+            }
+
+        let VideoRecorderErrors =
+            Pattern.Config "VideoRecorderErrors" {
+                Required = []
+                Optional = [
+                    "CAMERA_RESTRICTED", T<string>
+                    "CAMERA_DENIED", T<string>
+                    "MICROPHONE_RESTRICTED", T<string>
+                    "MICROPHONE_DENIED", T<string>
+                ]
+            }
+
+        let VideoRecorderCamera =
+            Pattern.EnumInlines "VideoRecorderCamera" [
+                "FRONT", "0"
+                "BACK", "1"
+            ]
+
+        let VideoRecorderQuality =
+            Pattern.EnumInlines "VideoRecorderQuality" [
+                "MAX_480P", "0"
+                "MAX_720P", "1"
+                "MAX_1080P", "2"
+                "MAX_2160P", "3"
+                "HIGHEST", "4"
+                "LOWEST", "5"
+                "QVGA", "6"
+            ]
+
+        let VideoRecorderOptions =
+            Pattern.Config "VideoRecorderOptions" {
+                Required = []
+                Optional = [
+                    "camera", VideoRecorderCamera.Type
+                    "quality", VideoRecorderQuality.Type
+                    "autoShow", T<bool>
+                    "previewFrames", !|VideoRecorderPreviewFrame
+                ]
+            }
+
+        let ShowPreviewFrameOptions = 
+            Pattern.Config "ShowPreviewFrameOptions" {
+                Required = ["position", T<int>; "quality", T<int>]
+                Optional = []
+            }
+
+        let VideoRecorderPlugin =
+            Class "VideoRecorderPlugin"
+            |+> Instance [
+                "initialize" => !?VideoRecorderOptions?options ^-> T<Promise<unit>>
+                "destroy" => T<unit> ^-> T<Promise<unit>>
+                "flipCamera" => T<unit> ^-> T<Promise<unit>>
+                "addPreviewFrameConfig" => VideoRecorderPreviewFrame?config ^-> T<Promise<unit>>
+                "editPreviewFrameConfig" => VideoRecorderPreviewFrame?config ^-> T<Promise<unit>>
+                "switchToPreviewFrame" => T<string>?options ^-> T<Promise<unit>>
+                "showPreviewFrame" => ShowPreviewFrameOptions?config ^-> T<Promise<unit>>
+                "hidePreviewFrame" => T<unit> ^-> T<Promise<unit>>
+                "startRecording" => T<unit> ^-> T<Promise<unit>>
+                "stopRecording" => T<unit> ^-> T<Promise<string>>
+                "getDuration" => T<unit> ^-> T<Promise<int>>
+                "addListener" => T<string>?eventName * (T<obj>?event ^-> T<unit>)?listenerFunc ^-> T<Promise<_>>[PluginListenerHandle]
+            ]
+
+    [<AutoOpen>]
+    module Media = 
+        let MediaLocation =
+            Pattern.Config "MediaLocation" {
+                Required = []
+                Optional = [
+                    "latitude", T<float>
+                    "longitude", T<float>
+                    "heading", T<float>
+                    "altitude", T<float>
+                    "speed", T<float>
+                ]
+            }
+
+        let MediaAsset =
+            Pattern.Config "MediaAsset" {
+                Required = []
+                Optional = [
+                    "identifier", T<string>
+                    "data", T<string>
+                    "creationDate", T<string>
+                    "fullWidth", T<int>
+                    "fullHeight", T<int>
+                    "thumbnailWidth", T<int>
+                    "thumbnailHeight", T<int>
+                    "location", MediaLocation.Type
+                ]
+            }
+
+        let MediaResponse =
+            Pattern.Config "MediaResponse" {
+                Required = []
+                Optional = ["medias", !|MediaAsset]
+            }
+
+        let MediaPath =
+            Pattern.Config "MediaPath" {
+                Required = []
+                Optional = [
+                    "path", T<string>
+                    "identifier", T<string>
+                ]
+            }
+
+        let AlbumsPathResponse =
+            Pattern.Config "AlbumsPathResponse" {
+                Required = []
+                Optional = ["path", T<string>]
+            }
+
+        let MediaAlbumType = 
+            Pattern.EnumStrings "MediaAlbumType" [
+                "smart"; "shared"; "user"
+            ]
+
+        let MediaAlbum =
+            Pattern.Config "MediaAlbum" {
+                Required = []
+                Optional = [
+                    "identifier", T<string>
+                    "name", T<string>
+                    "type", MediaAlbumType.Type
+                ]
+            }
+
+        let MediaAlbumResponse =
+            Pattern.Config "MediaAlbumResponse" {
+                Required = []
+                Optional = ["albums", !|MediaAlbum]
+            }
+
+        let MediaAlbumCreate =
+            Pattern.Config "MediaAlbumCreate" {
+                Required = []
+                Optional = ["name", T<string>]
+            }
+
+        let MediaSaveOptions =
+            Pattern.Config "MediaSaveOptions" {
+                Required = []
+                Optional = [
+                    "path", T<string>
+                    "albumIdentifier", T<string>
+                    "fileName", T<string>
+                ]
+            }
+
+        let MediaTypes =    
+            Pattern.EnumStrings "MediaTypes" [
+                "photos"; "videos"; "all"
+            ]
+
+        let MediaSortKeys =    
+            Pattern.EnumStrings "MediaSortKeys" [
+                "mediaType"
+                "mediaSubtypes"
+                "sourceType" 
+                "pixelWidth"  
+                "pixelHeight" 
+                "creationDate" 
+                "modificationDate" 
+                "isFavorite" 
+                "burstIdentifier"
+            ]
+
+        let MediaSort =
+            Pattern.Config "MediaSort" {
+                Required = []
+                Optional = [
+                    "key", MediaSortKeys.Type
+                    "ascending", T<bool>
+                ]
+            }
+
+        let MediaFetchOptions =
+            Pattern.Config "MediaFetchOptions" {
+                Required = []
+                Optional = [
+                    "quantity", T<int>
+                    "thumbnailWidth", T<int>
+                    "thumbnailHeight", T<int>
+                    "thumbnailQuality", T<int>
+                    "types", MediaTypes.Type
+                    "albumIdentifier", T<string>
+                    "sort", MediaSortKeys.Type + !| MediaSort
+                ]
+            }
+
+        let PhotoResponse =
+            Pattern.Config "PhotoResponse" {
+                Required = []
+                Optional = [
+                    "filePath", T<string> 
+                ]
+            }
+
+        let GetMediaByIdentifierOptions = 
+            Pattern.Config "GetMediaByIdentifierOptions" {
+                Required = []
+                Optional = ["identifier", T<string>]
+            }
+
+        let MediaPlugin =
+            Class "MediaPlugin"
+            |+> Instance [
+                "getMedias" => !?MediaFetchOptions?options ^-> T<Promise<_>>[MediaResponse]
+                "getMediaByIdentifier" => !?GetMediaByIdentifierOptions?options ^-> T<Promise<_>>[MediaPath]
+                "getAlbums" => T<unit> ^-> T<Promise<_>>[MediaAlbumResponse]
+                "savePhoto" => !?MediaSaveOptions?options ^-> T<Promise<_>>[PhotoResponse]
+                "saveVideo" => !?MediaSaveOptions?options ^-> T<Promise<_>>[PhotoResponse]
+                "createAlbum" => MediaAlbumCreate?options ^-> T<Promise<unit>>
+                "getAlbumsPath" => T<unit> ^-> T<Promise<_>>[AlbumsPathResponse]
+            ]
+
+    [<AutoOpen>]
+    module AppIcon = 
+        let IconOptions =
+            Pattern.Config "IconOptions" {
+                Required = []
+                Optional = [
+                    "name", T<string>
+                    "suppressNotification", T<bool>
+                    "disable", !|T<string>
+                ]
+            }
+
+        let ResetOptions =
+            Pattern.Config "ResetOptions" {
+                Required = []
+                Optional = [
+                    "suppressNotification", T<bool>
+                    "disable", !|T<string>
+                ]
+            }
+
+        let IsSupportedResponse = 
+            Pattern.Config "IsSupportedResponse" {
+                Required = ["value", T<bool>]
+                Optional = []
+            }
+
+        let GetNameResponse = 
+            Pattern.Config "GetNameResponse" {
+                Required = ["value", T<string> + T<unit>]
+                Optional = []
+            }
+
+        let AppIconPlugin =
+            Class "AppIconPlugin"
+            |+> Instance [
+                "isSupported" => T<unit> ^-> T<Promise<_>>[IsSupportedResponse]
+                "getName" => T<unit> ^-> T<Promise<_>>[GetNameResponse]
+                "change" => IconOptions?options ^-> T<Promise<unit>>
+                "reset" => ResetOptions?options ^-> T<Promise<unit>>
+            ]
+
     let CapacitorCommunity = 
         Class "Capacitor.Community"
         |+> Static [
+            "AppIcon" =? AppIconPlugin
+            |> Import "AppIcon" "@capacitor-community/app-icon"
+            "Media" =? MediaPlugin
+            |> Import "Media" "@capacitor-community/media"
             "FacebookLogin" =? FacebookLoginPlugin
             |> Import "FacebookLogin" "@capacitor-community/facebook-login"
             "Stripe" =? StripePlugin
@@ -2087,6 +2379,8 @@ module Definition =
             |> Import "VolumeButtons" "@capacitor-community/volume-buttons"
             "InAppReview" =? InAppReviewPlugin
             |> Import "InAppReview" "@capacitor-community/in-app-review"
+            "VideoRecorder" =? VideoRecorderPlugin
+            |> Import "VideoRecorder" "@capacitor-community/video-recorder"
         ]
 
     let Assembly =
@@ -2108,6 +2402,9 @@ module Definition =
                 BackgroundGeolocationPlugin
                 VolumeButtonsPlugin
                 InAppReviewPlugin
+                VideoRecorderPlugin
+                MediaPlugin
+                AppIconPlugin
             ]
             Namespace "Websharper.Capacitor.Community.FacebookLogin" [
                 FacebookConfiguration; LoginOptions; FacebookLoginResponse; FacebookCurrentAccessTokenResponse; ProfileOptions; AccessToken
@@ -2167,6 +2464,18 @@ module Definition =
             ]
             Namespace "Websharper.Capacitor.Community.VolumeButtons" [
                 Direction; VolumeButtonsResult; GetIsWatchingResult; VolumeButtonsOptions
+            ]
+            Namespace "Websharper.Capacitor.Community.VideoRecorder" [
+                ShowPreviewFrameOptions; VideoRecorderOptions; VideoRecorderQuality; VideoRecorderCamera; VideoRecorderErrors
+                VideoRecorderPreviewFrame; StackPosition; DropShadow
+            ]
+            Namespace "Websharper.Capacitor.Community.Media" [
+                GetMediaByIdentifierOptions; PhotoResponse; MediaFetchOptions; MediaSort; MediaSortKeys
+                MediaSaveOptions; MediaAlbumCreate; MediaAlbumResponse; MediaAlbum; MediaAlbumType
+                MediaPath; MediaResponse; MediaAsset; MediaLocation; MediaTypes; AlbumsPathResponse
+            ]
+            Namespace "Websharper.Capacitor.Community.AppIcon" [
+                GetNameResponse; IsSupportedResponse; ResetOptions; IconOptions
             ]
         ]
 
