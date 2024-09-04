@@ -1327,6 +1327,504 @@ module Definition =
                 "pickContact" => PickContactOptions?options ^-> T<Promise<_>>[PickContactResult]
             ]
 
+    [<AutoOpen>]
+    module DatePicker = 
+        let DatePickerMode =
+            Pattern.EnumStrings "DatePickerMode" [
+                "time"
+                "date"
+                "dateAndTime"
+                "countDownTimer"
+            ]
+
+        let DatePickerTheme =
+            Pattern.EnumStrings "DatePickerTheme" [
+                "light"
+                "dark"
+            ]
+
+        let DatePickerIosStyle =
+            Pattern.EnumStrings "DatePickerIosStyle" [
+                "wheels"
+                "inline"
+            ]
+
+        let DatePickerBaseOptions = 
+            Pattern.Config "DatePickerBaseOptions" {
+                Required = []
+                Optional = [
+                    "format", T<string>
+                    "locale", T<string>
+                    "mode", DatePickerMode.Type
+                    "theme", DatePickerTheme.Type
+                    "timezone", T<string>
+                    "doneText", T<string>
+                    "cancelText", T<string>
+                    "is24h", T<bool>
+                ]
+            }
+
+        let DatePickerIosOptions = 
+            Pattern.Config "DatePickerIosOptions" {
+                Required = []
+                Optional = [
+                    "style", DatePickerIosStyle.Type
+                    "titleFontColor", T<string>
+                    "titleBgColor", T<string>
+                    "bgColor", T<string>
+                    "fontColor", T<string>
+                    "buttonBgColor", T<string>
+                    "buttonFontColor", T<string>
+                    "mergedDateAndTime", T<bool>
+                ]
+            }
+            |=> Inherits DatePickerBaseOptions
+
+        let DatePickerOptions = 
+            Pattern.Config "DatePickerOptions" {
+                Required = []
+                Optional = [
+                    "min", T<string>
+                    "max", T<string>
+                    "date", T<string>
+                    "ios", DatePickerIosOptions.Type
+                    "android", DatePickerBaseOptions.Type
+                ]
+            }
+            |=> Inherits DatePickerBaseOptions
+            
+
+        let DatePickerResult = 
+            Pattern.Config "DatePickerResult" {
+                Required = []
+                Optional = ["value", T<string>]
+            }
+
+        let DatePickerPlugin =
+            Class "DatePickerPlugin"
+            |+> Instance [
+                "present" => DatePickerOptions?options ^-> T<Promise<_>>[DatePickerResult]
+            ]
+
+    [<AutoOpen>]
+    module SQLite = 
+        let capSQLiteOptions = 
+            Pattern.Config "capSQLiteOptions" {
+                Required = []
+                Optional = [
+                    "database", T<string>
+                    "readonly", T<bool>
+                ]
+            }
+
+        let capSQLiteLocalDiskOptions = 
+            Pattern.Config "capSQLiteLocalDiskOptions" {
+                Required = []
+                Optional = [
+                    "overwrite", T<bool>
+                ]
+            }
+
+        let capSQLiteResult = 
+            Pattern.Config "capSQLiteResult" {
+                Required = []
+                Optional = ["result", T<bool>]
+            }
+
+        let capSetSecretOptions = 
+            Pattern.Config "capSetSecretOptions" {
+                Required = []
+                Optional = ["passphrase", T<string>]
+            }
+
+        let capChangeSecretOptions = 
+            Pattern.Config "capChangeSecretOptions" {
+                Required = []
+                Optional = [
+                    "passphrase", T<string>
+                    "oldpassphrase", T<string>
+                ]
+            }
+
+        let capConnectionOptions = 
+            Pattern.Config "capConnectionOptions" {
+                Required = []
+                Optional = [
+                    "database", T<string>
+                    "version", T<int>
+                    "encrypted", T<bool>
+                    "mode", T<string>
+                    "readonly", T<bool>
+                ]
+            }
+
+        let capEchoResult = 
+            Pattern.Config "capEchoResult" {
+                Required = []
+                Optional = ["value", T<string>]
+            }
+
+        let capEchoOptions = 
+            Pattern.Config "capEchoOptions" {
+                Required = []
+                Optional = ["value", T<string>]
+            }
+
+        let Changes = 
+            Pattern.Config "Changes" {
+                Required = []
+                Optional = [
+                    "changes", T<int>
+                    "lastId", T<int>
+                    "values", !|T<obj>
+                ]
+            }
+
+        let capSQLiteChanges = 
+            Pattern.Config "capSQLiteChanges" {
+                Required = []
+                Optional = [
+                    "changes", Changes.Type
+                ]
+            }
+
+        let capSQLiteUrl = 
+            Pattern.Config "capSQLiteUrl" {
+                Required = []
+                Optional = ["url", T<string>]
+            }
+
+        let capVersionResult = 
+            Pattern.Config "capVersionResult" {
+                Required = []
+                Optional = ["version", T<int>]
+            }     
+
+        let capAllConnectionsOptions = 
+            Pattern.Config "capAllConnectionsOptions" {
+                Required = []
+                Optional = [
+                    "dbNames", !|T<string>
+                    "openModes", !|T<string>
+                ]
+            }
+
+        let capNCDatabasePathOptions = 
+            Pattern.Config "capNCDatabasePathOptions" {
+                Required = []
+                Optional = [
+                    "path", T<string>
+                    "database", T<string>
+                ]
+            }
+
+        let capNCConnectionOptions = 
+            Pattern.Config "capNCConnectionOptions" {
+                Required = []
+                Optional = [
+                    "databasePath", T<string>
+                    "version", T<int>
+                ]
+            }
+
+        let capNCOptions = 
+            Pattern.Config "capNCOptions" {
+                Required = []
+                Optional = ["databasePath", T<string>]
+            }
+
+        let capSQLiteExecuteOptions = 
+            Pattern.Config "capSQLiteExecuteOptions" {
+                Required = []
+                Optional = [
+                    "database", T<string>
+                    "statements", T<string>
+                    "transaction", T<bool>
+                    "readonly", T<bool>
+                    "isSQL92", T<bool>
+                ]
+            }
+
+        let capSQLiteSet = 
+            Pattern.Config "capSQLiteSet" {
+                Required = []
+                Optional = [
+                    "statements", T<string>
+                    "values", !| T<obj>
+                ]
+            }
+
+        let capSQLiteSetOptions = 
+            Pattern.Config "capSQLiteSetOptions" {
+                Required = []
+                Optional = [
+                    "database", T<string>
+                    "set", !| capSQLiteSet
+                    "transaction", T<bool>
+                    "readonly", T<bool>
+                    "returnMode", T<string>
+                    "isSQL92", T<bool>
+                ]
+            }
+
+        let capSQLiteRunOptions = 
+            Pattern.Config "capSQLiteRunOptions" {
+                Required = []
+                Optional = [
+                    "database", T<string>
+                    "statement", T<string>
+                    "values", !|T<obj>
+                    "transaction", T<bool>
+                    "readonly", T<bool>
+                    "returnMode", T<string>
+                    "isSQL92", T<bool>
+                ]
+            }
+
+        let capSQLiteQueryOptions = 
+            Pattern.Config "capSQLiteQueryOptions" {
+                Required = []
+                Optional = [
+                    "database", T<string>
+                    "statement", T<string>
+                    "values", !|T<obj>
+                    "readonly", T<bool>
+                    "isSQL92", T<bool>
+                ]
+            }
+
+        let capSQLiteVersionUpgrade = 
+            Pattern.Config "capSQLiteVersionUpgrade" {
+                Required = []
+                Optional = [
+                    "toVersion", T<int>
+                    "statements", !|T<string>
+                ]
+            }
+
+        let capSQLiteUpgradeOptions = 
+            Pattern.Config "capSQLiteUpgradeOptions" {
+                Required = []
+                Optional = [
+                    "database", T<string>
+                    "upgrade", !| capSQLiteVersionUpgrade
+                ]
+            }
+
+        let capSQLitePathOptions = 
+            Pattern.Config "capSQLitePathOptions" {
+                Required = []
+                Optional = [
+                    "folderPath", T<string>
+                    "dbNameList", !|T<string>
+                ]
+            }
+
+        let capSQLiteTableOptions = 
+            Pattern.Config "capSQLiteTableOptions" {
+                Required = []
+                Optional = [
+                    "database", T<string>
+                    "table", T<string>
+                    "readonly", T<bool>
+                ]
+            }
+
+        let capNCDatabasePathResult = 
+            Pattern.Config "capNCDatabasePathResult" {
+                Required = []
+                Optional = ["path", T<string>]
+            }
+
+        let capSQLiteValues = 
+            Pattern.Config "capSQLiteValues" {
+                Required = []
+                Optional = ["values", !|T<obj>]
+            }
+
+        let JsonColumn = 
+            Pattern.Config "JsonColumn" {
+                Required = []
+                Optional = [
+                    "column", T<string>
+                    "value", T<string>
+                    "foreignkey", T<string>
+                    "constraint", T<string>
+                ]
+            }
+
+        let JsonTrigger = 
+            Pattern.Config "JsonTrigger" {
+                Required = []
+                Optional = [
+                    "condition", T<string>
+                    "name", T<string>
+                    "timeevent", T<string>
+                    "logic", T<string>
+                ]
+            }
+
+        let JsonIndex = 
+            Pattern.Config "JsonIndex" {
+                Required = []
+                Optional = [
+                    "mode", T<string>
+                    "name", T<string>
+                    "value", T<string>
+                ]
+            }
+
+        let JsonTable = 
+            Pattern.Config "JsonTable" {
+                Required = []
+                Optional = [
+                    "name", T<string>
+                    "schema", !| JsonColumn 
+                    "indexes", !| JsonIndex 
+                    "triggers", !| JsonTrigger 
+                    "values", !| !| T<obj>
+                ]
+            }
+
+        let JsonView = 
+            Pattern.Config "JsonView" {
+                Required = []
+                Optional = [
+                    "name", T<string>
+                    "value", T<string>
+                ]
+            }
+
+        let JsonSQLite = 
+            Pattern.Config "JsonSQLite" {
+                Required = []
+                Optional = [
+                    "database", T<string>
+                    "version", T<int>
+                    "overwrite", T<bool>
+                    "encrypted", T<bool>
+                    "mode", T<string>
+                    "tables", !| JsonTable
+                    "views", !| JsonView
+                ]
+            }
+
+        let capSQLiteJson = 
+            Pattern.Config "capSQLiteJson" {
+                Required = []
+                Optional = ["export", JsonSQLite.Type] 
+            }
+
+        let capSQLiteSyncDate = 
+            Pattern.Config "capSQLiteSyncDate" {
+                Required = []
+                Optional = ["syncDate", T<int>]
+            }
+
+        let capSQLiteImportOptions = 
+            Pattern.Config "capSQLiteImportOptions" {
+                Required = []
+                Optional = [
+                    "jsonstring", T<string>
+                ]
+            }
+
+        let capSQLiteExportOptions = 
+            Pattern.Config "capSQLiteExportOptions" {
+                Required = []
+                Optional = [
+                    "database", T<string>
+                    "jsonexportmode", T<string>
+                    "readonly", T<bool>
+                    "encrypted", T<bool>
+                ]
+            }
+
+        let capSQLiteSyncDateOptions = 
+            Pattern.Config "capSQLiteSyncDateOptions" {
+                Required = []
+                Optional = [
+                    "database", T<string>
+                    "syncdate", T<string>
+                    "readonly", T<bool>
+                ]
+            }
+
+        let capSQLiteFromAssetsOptions = 
+            Pattern.Config "capSQLiteFromAssetsOptions" {
+                Required = []
+                Optional = [
+                    "overwrite", T<bool>
+                ]
+            }
+
+        let capSQLiteHTTPOptions = 
+            Pattern.Config "capSQLiteHTTPOptions" {
+                Required = []
+                Optional = [
+                    "url", T<string>
+                    "overwrite", T<bool>
+                ]
+            }
+
+        let SQLitePlugin =
+            Class "SQLitePlugin"
+            |+> Instance [
+                "initWebStore" => T<unit> ^-> T<Promise<unit>>
+                "saveToStore" => capSQLiteOptions?options ^-> T<Promise<unit>>
+                "getFromLocalDiskToStore" => capSQLiteLocalDiskOptions?options ^-> T<Promise<unit>>
+                "saveToLocalDisk" => capSQLiteOptions?options ^-> T<Promise<unit>>
+                "isSecretStored" => T<unit> ^-> T<Promise<_>>[capSQLiteResult]
+                "setEncryptionSecret" => capSetSecretOptions?options ^-> T<Promise<unit>>
+                "changeEncryptionSecret" => capChangeSecretOptions?options ^-> T<Promise<unit>>
+                "clearEncryptionSecret" => T<unit> ^-> T<Promise<unit>>
+                "checkEncryptionSecret" => capSetSecretOptions?options ^-> T<Promise<_>>[capSQLiteResult]
+                "createConnection" => capConnectionOptions?options ^-> T<Promise<unit>>
+                "closeConnection" => capSQLiteOptions?options ^-> T<Promise<unit>>
+                "echo" => capEchoOptions?options ^-> T<Promise<_>>[capEchoResult]
+                "open" => capSQLiteOptions?options ^-> T<Promise<unit>>
+                "close" => capSQLiteOptions?options ^-> T<Promise<unit>>
+                "beginTransaction" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteChanges]
+                "commitTransaction" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteChanges]
+                "rollbackTransaction" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteChanges]
+                "isTransactionActive" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteResult]
+                "getUrl" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteUrl]
+                "getVersion" => capSQLiteOptions?options ^-> T<Promise<_>>[capVersionResult]
+                "execute" => capSQLiteExecuteOptions?options ^-> T<Promise<_>>[capSQLiteChanges]
+                "executeSet" => capSQLiteSetOptions?options ^-> T<Promise<_>>[capSQLiteChanges]
+                "run" => capSQLiteRunOptions?options ^-> T<Promise<_>>[capSQLiteChanges]
+                "query" => capSQLiteQueryOptions?options ^-> T<Promise<_>>[capSQLiteValues]
+                "isDBExists" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteResult]
+                "isDBOpen" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteResult]
+                "isDatabaseEncrypted" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteResult]
+                "isInConfigEncryption" => T<unit> ^-> T<Promise<_>>[capSQLiteResult]
+                "isInConfigBiometricAuth" => T<unit> ^-> T<Promise<_>>[capSQLiteResult]
+                "isDatabase" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteResult]
+                "isTableExists" => capSQLiteTableOptions?options ^-> T<Promise<_>>[capSQLiteResult]
+                "deleteDatabase" => capSQLiteOptions?options ^-> T<Promise<unit>>
+                "isJsonValid" => capSQLiteImportOptions?options ^-> T<Promise<_>>[capSQLiteResult]
+                "importFromJson" => capSQLiteImportOptions?options ^-> T<Promise<_>>[capSQLiteChanges]
+                "exportToJson" => capSQLiteExportOptions?options ^-> T<Promise<_>>[capSQLiteJson]
+                "createSyncTable" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteChanges]
+                "setSyncDate" => capSQLiteSyncDateOptions?options ^-> T<Promise<unit>>
+                "getSyncDate" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteSyncDate]
+                "deleteExportedRows" => capSQLiteOptions?options ^-> T<Promise<unit>>
+                "addUpgradeStatement" => capSQLiteUpgradeOptions?options ^-> T<Promise<unit>>
+                "copyFromAssets" => capSQLiteFromAssetsOptions?options ^-> T<Promise<unit>>
+                "getFromHTTPRequest" => capSQLiteHTTPOptions?options ^-> T<Promise<unit>>
+                "getDatabaseList" => T<unit> ^-> T<Promise<_>>[capSQLiteValues]
+                "getTableList" => capSQLiteOptions?options ^-> T<Promise<_>>[capSQLiteValues]
+                "getMigratableDbList" => capSQLitePathOptions?options ^-> T<Promise<_>>[capSQLiteValues]
+                "addSQLiteSuffix" => capSQLitePathOptions?options ^-> T<Promise<unit>>
+                "deleteOldDatabases" => capSQLitePathOptions?options ^-> T<Promise<unit>>
+                "moveDatabasesAndAddSuffix" => capSQLitePathOptions?options ^-> T<Promise<unit>>
+                "checkConnectionsConsistency" => capAllConnectionsOptions?options ^-> T<Promise<_>>[capSQLiteResult]
+                "getNCDatabasePath" => capNCDatabasePathOptions?options ^-> T<Promise<_>>[capNCDatabasePathResult]
+                "createNCConnection" => capNCConnectionOptions?options ^-> T<Promise<unit>>
+                "closeNCConnection" => capNCOptions?options ^-> T<Promise<unit>>
+                "isNCDatabase" => capNCOptions?options ^-> T<Promise<_>>[capSQLiteResult]
+            ]
+
     let CapacitorCommunity = 
         Class "Capacitor.Community"
         |+> Static [
@@ -1342,6 +1840,10 @@ module Definition =
             |> Import "GoogleMaps" "@capacitor-community/google-maps"
             "Contacts" =? ContactsPlugin
             |> Import "Contacts" "@capacitor-community/contacts"
+            "DatePicker" =? DatePickerPlugin
+            |> Import "DatePicker" "@capacitor-community/date-picker"
+            "SQLite" =? SQLitePlugin
+            |> Import "SQLite" "@capacitor-community/sqlite"
         ]
 
     let Assembly =
@@ -1355,6 +1857,8 @@ module Definition =
                 KeepAwakePlugin
                 GoogleMapsPlugin
                 ContactsPlugin
+                DatePickerPlugin
+                SQLitePlugin
             ]
             Namespace "Websharper.Capacitor.Community.FacebookLogin" [
                 FacebookConfiguration; LoginOptions; FacebookLoginResponse; FacebookCurrentAccessTokenResponse; ProfileOptions; AccessToken
@@ -1386,6 +1890,19 @@ module Definition =
                 PhoneInput; BirthdayInput; OrganizationInput; NameInput; CreateContactResult; GetContactsOptions; GetContactsResult; GetContactOptions
                 GetContactResult; Projection; ContactPayload; ImagePayload; PostalAddressPayload; EmailPayload; PhonePayload; BirthdayPayload
                 OrganizationPayload; NamePayload; PhoneType; EmailType; PostalAddressType; PermissionStatus
+            ]
+            Namespace "Websharper.Capacitor.Community.DatePicker" [
+                DatePickerResult; DatePickerOptions; DatePickerIosOptions; DatePickerBaseOptions
+                DatePickerIosStyle; DatePickerTheme; DatePickerMode
+            ]
+            Namespace "Websharper.Capacitor.Community.SQLite" [
+                capSQLiteRunOptions; capSQLiteSetOptions; capSQLiteSet; capSQLiteExecuteOptions; capNCOptions; capNCConnectionOptions
+                capNCDatabasePathOptions; capAllConnectionsOptions; capVersionResult; capSQLiteUrl; capSQLiteChanges; Changes
+                capEchoOptions; capEchoResult; capConnectionOptions; capChangeSecretOptions; capSetSecretOptions; capSQLiteResult
+                capSQLiteLocalDiskOptions; capSQLiteOptions; capSQLiteHTTPOptions; capSQLiteFromAssetsOptions; capSQLiteSyncDateOptions
+                capSQLiteExportOptions; capSQLiteImportOptions; capSQLiteSyncDate; capSQLiteJson; JsonSQLite; JsonView; JsonTable
+                JsonIndex; JsonTrigger; JsonColumn; capSQLiteValues; capNCDatabasePathResult; capSQLiteTableOptions; capSQLitePathOptions
+                capSQLiteUpgradeOptions; capSQLiteVersionUpgrade; capSQLiteQueryOptions
             ]
         ]
 
