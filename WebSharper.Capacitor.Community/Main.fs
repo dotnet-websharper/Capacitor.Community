@@ -1825,6 +1825,237 @@ module Definition =
                 "isNCDatabase" => capNCOptions?options ^-> T<Promise<_>>[capSQLiteResult]
             ]
 
+    [<AutoOpen>]
+    module ImageToText = 
+        let ImageOrientation =
+            Pattern.EnumStrings "ImageOrientation" [
+                "UP"
+                "DOWN"
+                "LEFT"
+                "RIGHT"
+            ]
+
+        let DetectTextFileOptions =
+            Pattern.Config "DetectTextFileOptions" {
+                Required = []
+                Optional = [
+                    "filename", T<string>
+                    "orientation", ImageOrientation.Type
+                ]
+            }
+
+        let DetectTextBase64Options =
+            Pattern.Config "DetectTextBase64Options" {
+                Required = []
+                Optional = [
+                    "base64", T<string>
+                    "orientation", ImageOrientation.Type
+                ]
+            }
+
+        let TextDetection =
+            Pattern.Config "TextDetection" {
+                Required = []
+                Optional = [
+                    "bottomLeft", !| (T<int> * T<int>) 
+                    "bottomRight", !| (T<int> * T<int>) 
+                    "topLeft", !| (T<int> * T<int>) 
+                    "topRight", !| (T<int> * T<int>) 
+                    "text", T<string>
+                ]
+            }
+
+        let TextDetections =
+            Pattern.Config "TextDetections" {
+                Required = [] 
+                Optional = ["textDetections", !|TextDetection] 
+            }
+
+        let ImageToTextPlugin =
+            Class "ImageToTextPlugin"
+            |+> Instance [
+                "detectText" => (DetectTextFileOptions + DetectTextBase64Options)?options ^-> T<Promise<_>>[TextDetections]
+            ]
+
+    [<AutoOpen>]
+    module FileOpener = 
+        let ChooserPosition =
+            Pattern.Config "ChooserPosition" {
+                Required = []
+                Optional = [
+                    "x", T<int>
+                    "y", T<int>
+                ]
+            }
+
+        let FileOpenerOptions =
+            Pattern.Config "FileOpenerOptions" {
+                Required = []
+                Optional = [
+                    "filePath", T<string>
+                    "contentType", T<string>
+                    "openWithDefault", T<bool>
+                    "chooserPosition", ChooserPosition.Type
+                ]
+            }
+
+        let FileOpenerPlugin =
+            Class "FileOpenerPlugin"
+            |+> Instance [
+                "open" => FileOpenerOptions?options ^-> T<Promise<unit>>
+            ]
+
+    [<AutoOpen>]
+    module AppleSignIn = 
+        let SignInWithAppleResponseData = 
+            Pattern.Config "SignInWithAppleResponseData" {
+                Required = []
+                Optional = [
+                    "user", T<string> + T<unit> 
+                    "email", T<string> + T<unit>
+                    "givenName", T<string> + T<unit>
+                    "familyName", T<string> + T<unit>
+                    "identityToken", T<string>
+                    "authorizationCode", T<string>
+                ]
+            }
+        
+        let SignInWithAppleResponse =
+            Pattern.Config "SignInWithAppleResponse" {
+                Required = []
+                Optional = [
+                    "response", SignInWithAppleResponseData.Type
+                ]
+            }
+
+        let SignInWithAppleOptions =
+            Pattern.Config "SignInWithAppleOptions" {
+                Required = []
+                Optional = [
+                    "clientId", T<string>
+                    "redirectURI", T<string>
+                    "scopes", T<string>
+                    "state", T<string>
+                    "nonce", T<string>
+                ]
+            }
+
+        let AppleSignInPlugin =
+            Class "AppleSignInPlugin"
+            |+> Instance [
+                "authorize" => !?SignInWithAppleOptions?options ^-> T<Promise<_>>[SignInWithAppleResponse]
+            ]
+
+    [<AutoOpen>]
+    module BackgroundGeolocation = 
+        let Location =
+            Pattern.Config "Location" {
+                Required = []
+                Optional = [
+                    "latitude", T<float>
+                    "longitude", T<float>
+                    "accuracy", T<float>
+                    "simulated", T<bool>
+                    "altitude", T<float> + T<unit> 
+                    "altitudeAccuracy", T<float> + T<unit>
+                    "bearing", T<float> + T<unit>
+                    "speed", T<float> + T<unit>
+                    "time", T<float> + T<unit>
+                ]
+            }
+
+        let CallbackError =
+            Pattern.Config "CallbackError" {
+                Required = []
+                Optional = [
+                    "code", T<string>
+                ]
+            }
+            |=> Inherits T<Error>
+
+        let WatcherOptions =
+            Pattern.Config "WatcherOptions" {
+                Required = []
+                Optional = [
+                    "backgroundMessage", T<string>
+                    "backgroundTitle", T<string>
+                    "requestPermissions", T<bool>
+                    "stale", T<bool>
+                    "distanceFilter", T<float>
+                ]
+            }
+
+        let RemoveWatcherOptions = 
+            Pattern.Config "RemoveWatcherOptions" {
+                Required = []
+                Optional = ["id", T<string>]
+            }
+
+        let CallbackOptions = 
+            Pattern.Config "CallbackOptions" {
+                Required = []
+                Optional = [
+                    "position", Location.Type
+                    "error", CallbackError.Type
+                ]
+            }
+
+        let CallbackFunc = CallbackOptions ^-> T<unit>
+
+        let BackgroundGeolocationPlugin =
+            Class "BackgroundGeolocationPlugin"
+            |+> Instance [
+                "addWatcher" => WatcherOptions?options * CallbackFunc?callback ^-> T<Promise<string>>
+                "removeWatcher" => RemoveWatcherOptions?options ^-> T<Promise<unit>>
+                "openSettings" => T<unit> ^-> T<Promise<unit>>
+            ]
+
+    [<AutoOpen>]
+    module VolumeButtons = 
+        let Direction = 
+            Pattern.EnumStrings "Direction" ["up"; "down"]
+
+        let VolumeButtonsResult =
+            Pattern.Config "VolumeButtonsResult" {
+                Required = []
+                Optional = [
+                    "direction", Direction.Type
+                ]
+            }
+
+        let GetIsWatchingResult =
+            Pattern.Config "GetIsWatchingResult" {
+                Required = []
+                Optional = ["value", T<bool>]
+            }
+
+        let VolumeButtonsOptions =
+            Pattern.Config "VolumeButtonsOptions" {
+                Required = []
+                Optional = [
+                    "disableSystemVolumeHandler", T<bool>
+                    "suppressVolumeIndicator", T<bool>
+                ]
+            }
+
+        let VolumeButtonsCallback  = VolumeButtonsResult?result * T<obj>?err ^-> T<unit>
+
+        let VolumeButtonsPlugin =
+            Class "VolumeButtonsPlugin"
+            |+> Instance [
+                "isWatching" => T<unit> ^-> T<Promise<_>>[GetIsWatchingResult]
+                "watchVolume" => VolumeButtonsOptions?options * VolumeButtonsCallback?callback ^-> T<Promise<string>>
+                "clearWatch" => T<unit> ^-> T<Promise<unit>>
+            ]
+
+    [<AutoOpen>]
+    module InAppReview = 
+        let InAppReviewPlugin =
+            Class "InAppReviewPlugin"
+            |+> Instance [
+                "requestReview" => T<unit> ^-> T<Promise<unit>>
+            ]
+
     let CapacitorCommunity = 
         Class "Capacitor.Community"
         |+> Static [
@@ -1844,6 +2075,18 @@ module Definition =
             |> Import "DatePicker" "@capacitor-community/date-picker"
             "SQLite" =? SQLitePlugin
             |> Import "SQLite" "@capacitor-community/sqlite"
+            "ImageToText" =? ImageToTextPlugin
+            |> Import "ImageToText" "@capacitor-community/image-to-text"
+            "FileOpener" =? FileOpenerPlugin
+            |> Import "FileOpener" "@capacitor-community/file-opener"
+            "AppleSignIn" =? AppleSignInPlugin
+            |> Import "AppleSignIn" "@capacitor-community/apple-sign-in"
+            "BackgroundGeolocation" =? BackgroundGeolocationPlugin
+            |> Import "BackgroundGeolocation" "@capacitor-community/background-geolocation"
+            "VolumeButtons" =? VolumeButtonsPlugin
+            |> Import "VolumeButtons" "@capacitor-community/volume-buttons"
+            "InAppReview" =? InAppReviewPlugin
+            |> Import "InAppReview" "@capacitor-community/in-app-review"
         ]
 
     let Assembly =
@@ -1859,6 +2102,12 @@ module Definition =
                 ContactsPlugin
                 DatePickerPlugin
                 SQLitePlugin
+                ImageToTextPlugin
+                FileOpenerPlugin
+                AppleSignInPlugin
+                BackgroundGeolocationPlugin
+                VolumeButtonsPlugin
+                InAppReviewPlugin
             ]
             Namespace "Websharper.Capacitor.Community.FacebookLogin" [
                 FacebookConfiguration; LoginOptions; FacebookLoginResponse; FacebookCurrentAccessTokenResponse; ProfileOptions; AccessToken
@@ -1903,6 +2152,21 @@ module Definition =
                 capSQLiteExportOptions; capSQLiteImportOptions; capSQLiteSyncDate; capSQLiteJson; JsonSQLite; JsonView; JsonTable
                 JsonIndex; JsonTrigger; JsonColumn; capSQLiteValues; capNCDatabasePathResult; capSQLiteTableOptions; capSQLitePathOptions
                 capSQLiteUpgradeOptions; capSQLiteVersionUpgrade; capSQLiteQueryOptions
+            ]
+            Namespace "Websharper.Capacitor.Community.ImageToText" [
+                TextDetections; TextDetection; DetectTextBase64Options; DetectTextFileOptions; ImageOrientation
+            ]
+            Namespace "Websharper.Capacitor.Community.FileOpener" [
+                FileOpenerOptions; ChooserPosition
+            ]
+            Namespace "Websharper.Capacitor.Community.AppleSignIn" [
+                SignInWithAppleOptions; SignInWithAppleResponse; SignInWithAppleResponseData
+            ]
+            Namespace "Websharper.Capacitor.Community.BackgroundGeolocation" [
+                Location; CallbackError; WatcherOptions; RemoveWatcherOptions; CallbackOptions
+            ]
+            Namespace "Websharper.Capacitor.Community.VolumeButtons" [
+                Direction; VolumeButtonsResult; GetIsWatchingResult; VolumeButtonsOptions
             ]
         ]
 
