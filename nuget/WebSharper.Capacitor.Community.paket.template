@@ -1,0 +1,21 @@
+type file
+id WebSharper.Capacitor.Community
+authors
+    IntelliFactory
+owners
+    IntelliFactory
+repositoryType git
+repositoryUrl https://github.com/dotnet-websharper/capacitor.community/
+licenseUrl https://github.com/dotnet-websharper/capacitor.community/blob/master/LICENSE.md
+iconUrl https://github.com/dotnet-websharper/core/raw/websharper50/tools/WebSharper.png
+projectUrl https://github.com/dotnet-websharper/capacitor.community
+description
+    WebSharper bindings for community Capacitor plugin
+tags
+    Web JavaScript F# C#
+files
+    ../WebSharper.Capacitor.Community/bin/Release/netstandard2.0/WebSharper.Capacitor.Community.dll ==> lib/netstandard2.0
+    ../WebSharper.Capacitor.Community/bin/Release/netstandard2.0/WebSharper.Capacitor.Community.xml ==> lib/netstandard2.0
+    ../WebSharper.Capacitor.Community/WebSharper.Capacitor.Community.fsproj ==> src/
+dependencies
+        WebSharper ~> LOCKEDVERSION:[3]
