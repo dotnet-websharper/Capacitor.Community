@@ -2344,9 +2344,501 @@ module Definition =
                 "reset" => ResetOptions?options ^-> T<Promise<unit>>
             ]
 
+    [<AutoOpen>]
+    module BarcodeScanner = 
+        let ScanOptions =
+            Pattern.Config "ScanOptions" {
+                Required = []
+                Optional = [
+                    "targetedFormats", !|T<string> 
+                    "cameraDirection", T<string>
+                ]
+            }
+
+        let StopScanOptions =
+            Pattern.Config "StopScanOptions" {
+                Required = []
+                Optional = [
+                    "resolveScan", T<bool>
+                ]
+            }
+
+        let ScanResultWithContent =
+            Pattern.Config "ScanResultWithContent" {
+                Required = []
+                Optional = [
+                    "hasContent", T<bool>
+                    "content", T<string>
+                    "format", T<string>
+                ]
+            }
+
+        let ScanResultWithoutContent =
+            Pattern.Config "ScanResultWithoutContent" {
+                Required = []
+                Optional = [
+                    "hasContent", T<bool>
+                    "content", T<unit> 
+                    "format", T<unit> 
+                ]
+            }
+
+        let ScanResult = ScanResultWithContent + ScanResultWithoutContent
+
+        let CheckPermissionOptions =
+            Pattern.Config "CheckPermissionOptions" {
+                Required = []
+                Optional = [
+                    "force", T<bool>
+                ]
+            }
+
+        let CheckPermissionResult =
+            Pattern.Config "CheckPermissionResult" {
+                Required = []
+                Optional = [
+                    "granted", T<bool>
+                    "denied", T<bool>
+                    "asked", T<bool>
+                    "neverAsked", T<bool>
+                    "restricted", T<bool>
+                    "unknown", T<bool>
+                ]
+            }
+
+        let TorchStateResult =
+            Pattern.Config "TorchStateResult" {
+                Required = []
+                Optional = [
+                    "isEnabled", T<bool>
+                ]
+            }
+
+        let StartScanningCallback = ScanResult?result * T<obj>?err ^-> T<unit>
+
+        let BarcodeScannerPlugin =
+            Class "BarcodeScannerPlugin"
+            |+> Instance [
+                "prepare" => !?ScanOptions?options ^-> T<Promise<unit>>
+                "hideBackground" => T<unit> ^-> T<Promise<unit>>
+                "showBackground" => T<unit> ^-> T<Promise<unit>>
+                "startScan" => !?ScanOptions?options ^-> T<Promise<_>>[ScanResult]
+                "startScanning" => !?ScanOptions?options * !?StartScanningCallback?callback ^-> T<Promise<string>>
+                "pauseScanning" => T<unit> ^-> T<Promise<unit>>
+                "resumeScanning" => T<unit> ^-> T<Promise<unit>>
+                "stopScan" => !?StopScanOptions?options ^-> T<Promise<unit>>
+                "checkPermission" => !?CheckPermissionOptions?options ^-> T<Promise<_>>[CheckPermissionResult]
+                "openAppSettings" => T<unit> ^-> T<Promise<unit>>
+                "enableTorch" => T<unit> ^-> T<Promise<unit>>
+                "disableTorch" => T<unit> ^-> T<Promise<unit>>
+                "toggleTorch" => T<unit> ^-> T<Promise<unit>>
+                "getTorchState" => T<unit> ^-> T<Promise<_>>[TorchStateResult]
+            ]
+
+    [<AutoOpen>]
+    module CardScanner = 
+        let EchoOptions = 
+            Pattern.Config "EchoOptions" {
+                Required = []
+                Optional = [
+                    "value", T<string>
+                ]
+            }
+
+        let EchoResult = 
+            Pattern.Config "EchoResult" {
+                Required = []
+                Optional = [
+                    "value", T<string>
+                ]
+            }
+
+        let CardScannerPlugin =
+            Class "CardScannerPlugin"
+            |+> Instance [
+                "echo" => EchoOptions?options ^-> T<Promise<_>>[EchoResult]
+            ]
+
+    [<AutoOpen>]
+    module PhotoViewer = 
+        let Image =
+            Pattern.Config "Image" {
+                Required = []
+                Optional = [
+                    "url", T<string>
+                    "title", T<string>
+                ]
+            }
+
+        let MovieOptions =
+            Pattern.Config "MovieOptions" {
+                Required = []
+                Optional = [
+                    "name", T<string>
+                    "imagetime", T<int>
+                    "mode", T<string>
+                    "ratio", T<string>
+                ]
+            }
+
+        let ViewerOptions =
+            Pattern.Config "ViewerOptions" {
+                Required = []
+                Optional = [
+                    "share", T<bool>
+                    "title", T<bool>
+                    "transformer", T<string>
+                    "spancount", T<int>
+                    "maxzoomscale", T<int>
+                    "compressionquality", T<int>
+                    "backgroundcolor", T<string>
+                    "divid", T<string>
+                    "movieoptions", MovieOptions.Type
+                    "customHeaders", T<obj>
+                ]
+            }
+
+        let CapShowOptions =
+            Pattern.Config "CapShowOptions" {
+                Required = []
+                Optional = [
+                    "images", !|Image.Type
+                    "options", ViewerOptions.Type
+                    "mode", T<string>
+                    "startFrom", T<int>
+                ]
+            }
+
+        let CapEchoOptions =
+            Pattern.Config "CapEchoOptions" {
+                Required = []
+                Optional = ["value", T<string>]
+            }
+
+        let CapEchoResult =
+            Pattern.Config "CapEchoResult" {
+                Required = []
+                Optional = ["value", T<string>]
+            }
+
+        let CapShowResult =
+            Pattern.Config "CapShowResult" {
+                Required = []
+                Optional = [
+                    "result", T<bool>
+                    "message", T<string>
+                    "imageIndex", T<int>
+                ]
+            }
+
+        let CapHttpOptions =
+            Pattern.Config "CapHttpOptions" {
+                Required = []
+                Optional = [
+                    "url", T<string>
+                    "filename", T<string>
+                ]
+            }
+
+        let CapHttpResult =
+            Pattern.Config "CapHttpResult" {
+                Required = []
+                Optional = [
+                    "webPath", T<string>
+                    "message", T<string>
+                ]
+            }
+
+        let CapPaths =
+            Pattern.Config "CapPaths" {
+                Required = []
+                Optional = ["pathList", !|T<string>]
+            }
+
+        let PhotoViewerPlugin =
+            Class "PhotoViewerPlugin"
+            |+> Instance [
+                "echo" => CapEchoOptions?options ^-> T<Promise<_>>[CapEchoResult]
+                "show" => CapShowOptions?options ^-> T<Promise<_>>[CapShowResult]
+                "saveImageFromHttpToInternal" => CapHttpOptions?options ^-> T<Promise<_>>[CapHttpResult]
+                "getInternalImagePaths" => T<unit> ^-> T<Promise<_>>[CapPaths]
+            ]
+
+    [<AutoOpen>]
+    module Intercom = 
+        let IntercomPushNotificationData =
+            Pattern.Config "IntercomPushNotificationData" {
+                Required = []
+                Optional = [
+                    "conversation_id", T<string>
+                    "message", T<string>
+                    "body", T<string>
+                    "author_name", T<string>
+                    "image_url", T<string>
+                    "app_name", T<string>
+                    "receiver", T<string>
+                    "conversation_part_type", T<string>
+                    "intercom_push_type", T<string>
+                    "uri", T<string>
+                    "push_only_conversation_id", T<string>
+                    "instance_id", T<string>
+                    "title", T<string>
+                    "priority", T<int>
+                ]
+            }
+
+        let IntercomUserUpdateOptions =
+            Pattern.Config "IntercomUserUpdateOptions" {
+                Required = []
+                Optional = [
+                    "userId", T<string>
+                    "email", T<string>
+                    "name", T<string>
+                    "phone", T<string>
+                    "languageOverride", T<string>
+                    "customAttributes", !| T<obj>
+                ]
+            }
+
+        let LoadWithKeysOptions = 
+            Pattern.Config "LoadWithKeysOptions" {
+                Required = []
+                Optional = [
+                    "appId", T<string>
+                    "apiKeyIOS", T<string>
+                    "apiKeyAndroid", T<string>
+                ]
+            }
+
+        let RegisterIdentifiedUserOptions = 
+            Pattern.Config "RegisterIdentifiedUserOptions" {
+                Required = []
+                Optional = [
+                    "userId", T<string>
+                    "email", T<string>
+                ]
+            }
+
+        let LogEventOptions =
+            Pattern.Config "LogEventOptions" {
+                Required = []
+                Optional = [
+                    "name", T<string>
+                    "data", T<obj>
+                ]
+            }
+
+        let IntercomPlugin =
+            Class "IntercomPlugin"
+            |+> Instance [
+                "loadWithKeys" => LoadWithKeysOptions?options ^-> T<Promise<unit>>
+                "registerIdentifiedUser" => RegisterIdentifiedUserOptions?options ^-> T<Promise<unit>>
+                "registerUnidentifiedUser" => T<unit> ^-> T<Promise<unit>>
+                "updateUser" => IntercomUserUpdateOptions?options ^-> T<Promise<unit>>
+                "logout" => T<unit> ^-> T<Promise<unit>>
+                "logEvent" => LogEventOptions?options ^-> T<Promise<unit>>
+                "displayMessenger" => T<unit> ^-> T<Promise<unit>>
+                "displayMessageComposer" => T<string>?options ^-> T<Promise<unit>>
+                "displayHelpCenter" => T<unit> ^-> T<Promise<unit>>
+                "hideMessenger" => T<unit> ^-> T<Promise<unit>>
+                "displayLauncher" => T<unit> ^-> T<Promise<unit>>
+                "hideLauncher" => T<unit> ^-> T<Promise<unit>>
+                "displayInAppMessages" => T<unit> ^-> T<Promise<unit>>
+                "hideInAppMessages" => T<unit> ^-> T<Promise<unit>>
+                "displayCarousel" => T<string>?options ^-> T<Promise<unit>>
+                "setUserHash" => T<string>?options ^-> T<Promise<unit>>
+                "setBottomPadding" => T<string>?options ^-> T<Promise<unit>>
+                "sendPushTokenToIntercom" => T<string>?options ^-> T<Promise<unit>>
+                "receivePush" => IntercomPushNotificationData?notification ^-> T<Promise<unit>>
+                "displayArticle" => T<string>?options ^-> T<Promise<unit>>
+            ]
+
+    [<AutoOpen>]
+    module SpeechRecognition = 
+        let PermissionStatus =
+            Pattern.Config "PermissionStatus" {
+                Required = []
+                Optional = ["speechRecognition", PermissionState.Type]
+            }
+
+        let UtteranceOptions =
+            Pattern.Config "UtteranceOptions" {
+                Required = []
+                Optional = [
+                    "language", T<string>
+                    "maxResults", T<int>
+                    "prompt", T<string>
+                    "popup", T<bool>
+                    "partialResults", T<bool>
+                ]
+            }
+
+        let AvailableResponse =
+            Pattern.Config "AvailableResponse" {
+                Required = ["available", T<bool>]
+                Optional = []
+            }
+
+        let MatchesResponse =
+            Pattern.Config "MatchesResponse" {
+                Required = []
+                Optional = ["matches", !|T<string>]
+            }
+
+        let ListeningResponse =
+            Pattern.Config "ListeningResponse" {
+                Required = ["listening", T<bool>]
+                Optional = []
+            }
+
+        let SupportedLanguagesResponse =
+            Pattern.Config "SupportedLanguagesResponse" {
+                Required = ["languages", !|T<obj>]
+                Optional = []
+            }
+
+        let ListeningStateResponse =
+            Pattern.Config "ListeningStateResponse" {
+                Required = ["status", T<string>]
+                Optional = []
+            }
+
+        let PartialResultsResponse =
+            Pattern.Config "PartialResultsResponse" {
+                Required = ["matches", !|T<string>]
+                Optional = []
+            }
+
+        let SpeechRecognitionPlugin =
+            Class "SpeechRecognitionPlugin"
+            |+> Instance [
+                "available" => T<unit> ^-> T<Promise<_>>[AvailableResponse]
+                "start" => UtteranceOptions?options ^-> T<Promise<_>>[MatchesResponse]
+                "stop" => T<unit> ^-> T<Promise<unit>>
+                "getSupportedLanguages" => T<unit> ^-> T<Promise<_>>[SupportedLanguagesResponse]
+                "isListening" => T<unit> ^-> T<Promise<_>>[ListeningResponse]
+                "checkPermissions" => T<unit> ^-> T<Promise<_>>[PermissionStatus]
+                "requestPermissions" => T<unit> ^-> T<Promise<_>>[PermissionStatus]
+                "addListener" => T<string>?eventName * (PartialResultsResponse?data ^-> T<unit>)?listenerFunc ^-> T<Promise<_>>[PluginListenerHandle]
+                |> WithComment "Listen to 'partialResults' event"
+                "addListener" => T<string>?eventName * (ListeningStateResponse?data ^-> T<unit>)?listenerFunc ^-> T<Promise<_>>[PluginListenerHandle]
+                |> WithComment "Listen to 'listeningState' event"
+                "removeAllListeners" => T<unit> ^-> T<Promise<unit>>
+            ]
+
+    [<AutoOpen>]
+    module CameraPreview = 
+        let CameraPreviewOptions =
+            Pattern.Config "CameraPreviewOptions" {
+                Required = []
+                Optional = [
+                    "parent", T<string>
+                    "className", T<string>
+                    "width", T<int>
+                    "height", T<int>
+                    "x", T<int>
+                    "y", T<int>
+                    "toBack", T<bool>
+                    "paddingBottom", T<int>
+                    "rotateWhenOrientationChanged", T<bool>
+                    "position", T<string>
+                    "storeToFile", T<bool>
+                    "disableExifHeaderStripping", T<bool>
+                    "enableHighResolution", T<bool>
+                    "disableAudio", T<bool>
+                    "lockAndroidOrientation", T<bool>
+                    "enableOpacity", T<bool>
+                    "enableZoom", T<bool>
+                ]
+            }
+
+        let CameraPreviewPictureOptions =
+            Pattern.Config "CameraPreviewPictureOptions" {
+                Required = []
+                Optional = [
+                    "height", T<int>
+                    "width", T<int>
+                    "quality", T<int>
+                ]
+            }
+
+        let CameraSampleOptions =
+            Pattern.Config "CameraSampleOptions" {
+                Required = []
+                Optional = [
+                    "quality", T<int>
+                ]
+            }
+
+        let CameraOpacityOptions =
+            Pattern.Config "CameraOpacityOptions" {
+                Required = []
+                Optional = ["opacity", T<int>]
+            }
+
+        let CameraPreviewPlugin =
+            Class "CameraPreviewPlugin"
+            |+> Instance [
+                "start" => CameraPreviewOptions?options ^-> T<Promise<_>>
+                "startRecordVideo" => CameraPreviewOptions?options ^-> T<Promise<_>>
+                "stop" => T<unit> ^-> T<Promise<_>>
+                "stopRecordVideo" => T<unit> ^-> T<Promise<_>>
+                "capture" => CameraPreviewPictureOptions?options ^-> T<Promise<string>>
+                "captureSample" => CameraSampleOptions?options ^-> T<Promise<string>>
+                "getSupportedFlashModes" => T<unit> ^-> T<Promise<_>>[!|T<string>]
+                "setFlashMode" => T<string>?options ^-> T<Promise<unit>>
+                "flip" => T<unit> ^-> T<Promise<unit>>
+                "setOpacity" => CameraOpacityOptions?options ^-> T<Promise<_>>
+            ]
+
+    [<AutoOpen>]
+    module SafeArea = 
+        let Config =
+            Pattern.Config "Config" {
+                Required = []
+                Optional = [
+                    "customColorsForSystemBars", T<bool>
+                    "statusBarColor", T<string>
+                    "statusBarContent", T<string>
+                    "navigationBarColor", T<string>
+                    "navigationBarContent", T<string>
+                    "offset", T<int>
+                ]
+            }
+
+        let SafeAreaPlugin =
+            Class "SafeAreaPlugin"
+            |+> Instance [
+                "enable" => Config?options ^-> T<Promise<unit>>
+                "disable" => Config?options ^-> T<Promise<unit>>
+            ]
+    
+        let SafeAreaPluginConfig =
+            Pattern.Config "PluginsConfig.SafeArea" {
+                Required = []
+                Optional = [
+                    "enabled", T<bool>
+                ]
+            }
+            |=> Inherits Config
+
     let CapacitorCommunity = 
         Class "Capacitor.Community"
         |+> Static [
+            "SafeArea" =? SafeAreaPlugin
+            |> Import "SafeArea" "@capacitor-community/safe-area"
+            "CameraPreview" =? CameraPreviewPlugin
+            |> Import "CameraPreview" "@capacitor-community/camera-preview"
+            "SpeechRecognition" =? SpeechRecognitionPlugin
+            |> Import "SpeechRecognition" "@capacitor-community/speech-recognition"
+            "Intercom" =? IntercomPlugin
+            |> Import "Intercom" "@capacitor-community/intercom"
+            "PhotoViewer" =? PhotoViewerPlugin
+            |> Import "PhotoViewer" "@capacitor-community/photoviewer"
+            "CardScanner" =? CardScannerPlugin
+            |> Import "CardScanner" "@capacitor-community/card-scanner"
+            "BarcodeScanner" =? BarcodeScannerPlugin
+            |> Import "BarcodeScanner" "@capacitor-community/barcode-scanner"
             "AppIcon" =? AppIconPlugin
             |> Import "AppIcon" "@capacitor-community/app-icon"
             "Media" =? MediaPlugin
@@ -2405,6 +2897,12 @@ module Definition =
                 VideoRecorderPlugin
                 MediaPlugin
                 AppIconPlugin
+                BarcodeScannerPlugin
+                CardScannerPlugin
+                PhotoViewerPlugin
+                IntercomPlugin
+                SpeechRecognitionPlugin
+                CameraPreviewPlugin
             ]
             Namespace "Websharper.Capacitor.Community.FacebookLogin" [
                 FacebookConfiguration; LoginOptions; FacebookLoginResponse; FacebookCurrentAccessTokenResponse; ProfileOptions; AccessToken
@@ -2435,7 +2933,7 @@ module Definition =
                 PickContactOptions; PickContactResult; DeleteContactOptions; CreateContactOptions; ContactInput; PostalAddressInput; EmailInput
                 PhoneInput; BirthdayInput; OrganizationInput; NameInput; CreateContactResult; GetContactsOptions; GetContactsResult; GetContactOptions
                 GetContactResult; Projection; ContactPayload; ImagePayload; PostalAddressPayload; EmailPayload; PhonePayload; BirthdayPayload
-                OrganizationPayload; NamePayload; PhoneType; EmailType; PostalAddressType; PermissionStatus
+                OrganizationPayload; NamePayload; PhoneType; EmailType; PostalAddressType; Contacts.PermissionStatus
             ]
             Namespace "Websharper.Capacitor.Community.DatePicker" [
                 DatePickerResult; DatePickerOptions; DatePickerIosOptions; DatePickerBaseOptions
@@ -2476,6 +2974,31 @@ module Definition =
             ]
             Namespace "Websharper.Capacitor.Community.AppIcon" [
                 GetNameResponse; IsSupportedResponse; ResetOptions; IconOptions
+            ]
+            Namespace "Websharper.Capacitor.Community.BarcodeScanner" [
+                TorchStateResult; CheckPermissionResult; CheckPermissionOptions; ScanResultWithoutContent
+                StopScanOptions; ScanOptions; ScanResultWithContent
+            ]
+            Namespace "Websharper.Capacitor.Community.CardScanner" [
+                EchoOptions; EchoResult
+            ]
+            Namespace "Websharper.Capacitor.Community.PhotoViewer" [
+                CapPaths; CapHttpResult; CapHttpOptions; CapShowResult; CapEchoResult
+                CapShowOptions; ViewerOptions; MovieOptions; Image; CapEchoOptions
+            ]
+            Namespace "Websharper.Capacitor.Community.Intercom" [
+                IntercomUserUpdateOptions; IntercomPushNotificationData; LogEventOptions
+                RegisterIdentifiedUserOptions; LoadWithKeysOptions
+            ]
+            Namespace "Websharper.Capacitor.Community.SpeechRecognition" [
+                PartialResultsResponse; ListeningStateResponse; SupportedLanguagesResponse; ListeningResponse
+                MatchesResponse; AvailableResponse; UtteranceOptions; PermissionStatus
+            ]
+            Namespace "Websharper.Capacitor.Community.CameraPreview" [
+                CameraOpacityOptions; CameraSampleOptions; CameraPreviewPictureOptions; CameraPreviewOptions
+            ]
+            Namespace "Websharper.Capacitor.Community.SafeArea" [
+                Config; SafeAreaPluginConfig
             ]
         ]
 
