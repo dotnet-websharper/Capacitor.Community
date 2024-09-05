@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Product>WebSharper.Popover</Product>
+    <Product>WebSharper.Capacitor.Commnuity</Product>
     <Title>https://github.com/dotnet-websharper/capacitor.community/</Title>
     <Company>IntelliFactory</Company>
     <Copyright>(c) 2023 IntelliFactory</Copyright>
