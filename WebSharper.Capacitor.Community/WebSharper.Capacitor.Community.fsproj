@@ -10,19 +10,18 @@
   </PropertyGroup>
   <PropertyGroup>
     <NpmDependencies>
+	  <NpmPackage Name="@capacitor-community/bluetooth-le" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/safe-area" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/camera-preview" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/speech-recognition" Version="gt= 6.0.1 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/intercom" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/photoviewer" Version="gt= 4.0.1 lt 5.0.0" ResolutionStrategy="Max" />
-      <NpmPackage Name="@capacitor-community/barcode-scanner" Version="gt= 4.0.1 lt 5.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/app-icon" Version="gt= 5.0.0 lt 6.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/media" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/facebook-login" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/stripe" Version="gt= 6.2.1 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/privacy-screen" Version="gt= 5.2.1 lt 6.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/keep-awake" Version="gt= 5.0.1 lt 6.0.0" ResolutionStrategy="Max" />
-      <NpmPackage Name="@capacitor-community/google-maps" Version="gt= 2.0.0 lt 3.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/contacts" Version="gt= 6.0.6 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/date-picker" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/sqlite" Version="gt= 6.0.1 lt 7.0.0" ResolutionStrategy="Max" />
@@ -32,7 +31,6 @@
       <NpmPackage Name="@capacitor-community/background-geolocation" Version="gt= 1.2.19 lt 2.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/volume-buttons" Version="gt= 6.0.1 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/in-app-review" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
-      <NpmPackage Name="@capacitor-community/video-recorder" Version="gt= 5.0.1 lt 6.0.0" ResolutionStrategy="Max" />
     </NpmDependencies>
   </PropertyGroup>
   <ItemGroup>

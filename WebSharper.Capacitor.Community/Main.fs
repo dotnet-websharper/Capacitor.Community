@@ -2105,10 +2105,207 @@ module Definition =
                 ]
             }
             |=> Inherits Config
+        
+    [<AutoOpen>]
+    module BluetoothLe = 
+        let ScanMode =
+            Pattern.EnumInlines "ScanMode" [
+                "SCAN_MODE_LOW_POWER", "0"
+                "SCAN_MODE_BALANCED", "1"
+                "SCAN_MODE_LOW_LATENCY", "2"
+            ]
+
+        let ConnectionPriority =
+            Pattern.EnumInlines "ConnectionPriority" [
+                "CONNECTION_PRIORITY_BALANCED", "0"
+                "CONNECTION_PRIORITY_HIGH", "1"
+                "CONNECTION_PRIORITY_LOW_POWER", "2"
+            ]
+
+        let InitializeOptions =
+            Pattern.Config "InitializeOptions" {
+                Required = []
+                Optional = [
+                    "androidNeverForLocation", T<bool>
+                ]
+            }
+
+        let DisplayStrings =
+            Pattern.Config "DisplayStrings" {
+                Required = []
+                Optional = [
+                    "scanning", T<string>
+                    "cancel", T<string>
+                    "availableDevices", T<string>
+                    "noDeviceFound", T<string>
+                ]
+            }
+
+        let BleDevice =
+            Pattern.Config "BleDevice" {
+                Required = []
+                Optional = [
+                    "deviceId", T<string>
+                    "name", T<string>
+                    "uuids", !| T<string>
+                ]
+            }
+
+        let RequestBleDeviceOptions =
+            Pattern.Config "RequestBleDeviceOptions" {
+                Required = []
+                Optional = [
+                    "services", !| T<string>
+                    "name", T<string>
+                    "namePrefix", T<string>
+                    "optionalServices", !| T<string>
+                    "allowDuplicates", T<bool>
+                    "scanMode", ScanMode.Type
+                ]
+            }
+
+        let BleCharacteristicProperties =
+            Pattern.Config "BleCharacteristicProperties" {
+                Required = []
+                Optional = [
+                    "broadcast", T<bool>
+                    "read", T<bool>
+                    "writeWithoutResponse", T<bool>
+                    "write", T<bool>
+                    "notify", T<bool>
+                    "indicate", T<bool>
+                    "authenticatedSignedWrites", T<bool>
+                    "reliableWrite", T<bool>
+                    "writableAuxiliaries", T<bool>
+                    "extendedProperties", T<bool>
+                    "notifyEncryptionRequired", T<bool>
+                    "indicateEncryptionRequired", T<bool>
+                ]
+            }
+
+        let BleDescriptor = 
+            Pattern.Config "BleDescriptor" {
+                Required = []
+                Optional = [
+                    "uuid", T<string>
+                ]
+            }
+
+        let BleCharacteristic =
+            Pattern.Config "BleCharacteristic" {
+                Required = []
+                Optional = [
+                    "uuid", T<string>
+                    "properties", BleCharacteristicProperties.Type
+                    "descriptors", !| BleDescriptor
+                ]
+            }
+
+        let BleService =
+            Pattern.Config "BleService" {
+                Required = []
+                Optional = [
+                    "uuid", T<string>
+                    "characteristics", !| BleCharacteristic
+                ]
+            }
+
+        let TimeoutOptions =
+            Pattern.Config "TimeoutOptions" {
+                Required = []
+                Optional = ["timeout", T<int>]
+            }
+
+        let ScanResult =
+            Pattern.Config "ScanResult" {
+                Required = []
+                Optional = [
+                    "device", BleDevice.Type
+                    "localName", T<string>
+                    "rssi", T<int>
+                    "txPower", T<int>
+                    "manufacturerData", T<obj> 
+                    "serviceData", T<obj> 
+                    "uuids", !| T<string>
+                    "rawAdvertisement", T<DataView> 
+                ]
+            }
+
+        let BooleanType = 
+            Pattern.Config "BooleanType" {
+                Required = []
+                Optional = [
+                    "value", T<bool>
+                ]
+            }
+
+        let ScanResultType = 
+            Pattern.Config "ScanResultType" {
+                Required = []
+                Optional = [
+                    "result", ScanResult.Type
+                ]
+            }
+
+        let StringType = 
+            Pattern.Config "StringType" {
+                Required = []
+                Optional = [
+                    "deviceId",T<string>
+                ]
+            }
+
+        let DataViewCallback = 
+            Pattern.Config "DataViewCallback" {
+                Required = []
+                Optional = [
+                    "value",T<DataView>
+                ]
+            }
+
+        let BluetoothLePlugin =
+            Class "BluetoothLePlugin"
+            |+> Instance [
+                "initialize" => !?InitializeOptions?options ^-> T<Promise<unit>>
+                "isEnabled" => T<unit> ^-> T<Promise<bool>>
+                "requestEnable" => T<unit> ^-> T<Promise<unit>>
+                "enable" => T<unit> ^-> T<Promise<unit>>
+                "disable" => T<unit> ^-> T<Promise<unit>>
+                "startEnabledNotifications" => (BooleanType ^-> T<unit>)?callback ^-> T<Promise<unit>>
+                "stopEnabledNotifications" => T<unit> ^-> T<Promise<unit>>
+                "isLocationEnabled" => T<unit> ^-> T<Promise<bool>>
+                "openLocationSettings" => T<unit> ^-> T<Promise<unit>>
+                "openBluetoothSettings" => T<unit> ^-> T<Promise<unit>>
+                "openAppSettings" => T<unit> ^-> T<Promise<unit>>
+                "setDisplayStrings" => DisplayStrings?displayStrings ^-> T<Promise<unit>>
+                "requestDevice" => !?RequestBleDeviceOptions?options ^-> T<Promise<_>>[BleDevice]
+                "requestLEScan" => RequestBleDeviceOptions?options * (ScanResultType ^-> T<unit>)?callback ^-> T<Promise<unit>>
+                "stopLEScan" => T<unit> ^-> T<Promise<unit>>
+                "getDevices" => (!|T<string>)?deviceIds ^-> T<Promise<_>>[!| BleDevice]
+                "getConnectedDevices" => (!|T<string>)?services ^-> T<Promise<_>>[!| BleDevice]
+                "connect" => T<string>?deviceId * !?(StringType ^-> T<unit>)?onDisconnect * !?TimeoutOptions?options ^-> T<Promise<unit>>
+                "createBond" => T<string>?deviceId * !?TimeoutOptions?options ^-> T<Promise<unit>>
+                "isBonded" => T<string>?deviceId ^-> T<Promise<bool>>
+                "disconnect" => T<string>?deviceId ^-> T<Promise<unit>>
+                "getServices" => T<string>?deviceId ^-> T<Promise<_>>[!| BleService] 
+                "discoverServices" => T<string>?deviceId ^-> T<Promise<unit>>
+                "getMtu" => T<string>?deviceId ^-> T<Promise<int>>
+                "requestConnectionPriority" => T<string>?deviceId * ConnectionPriority?connectionPriority ^-> T<Promise<unit>>
+                "readRssi" => T<string>?deviceId ^-> T<Promise<int>>
+                "read" => T<string>?deviceId * T<string>?service * T<string>?characteristic * !?TimeoutOptions?options ^-> T<Promise<DataView>>
+                "write" => T<string>?deviceId * T<string>?service * T<string>?characteristic * T<DataView>?value * !?TimeoutOptions?options ^-> T<Promise<unit>>
+                "writeWithoutResponse" => T<string>?deviceId * T<string>?service * T<string>?characteristic * T<DataView>?value * !?TimeoutOptions?options ^-> T<Promise<unit>>
+                "readDescriptor" => T<string>?deviceId * T<string>?service * T<string>?characteristic * T<string>?descriptor * !?TimeoutOptions?options ^-> T<Promise<DataView>>
+                "writeDescriptor" => T<string>?deviceId * T<string>?service * T<string>?characteristic * T<string>?descriptor * T<DataView>?value * !?TimeoutOptions?options ^-> T<Promise<unit>>
+                "startNotifications" => T<string>?deviceId * T<string>?service * T<string>?characteristic * (DataViewCallback ^-> T<unit>)?callback ^-> T<Promise<unit>>
+                "stopNotifications" => T<string>?deviceId * T<string>?service * T<string>?characteristic ^-> T<Promise<unit>>
+            ]
 
     let CapacitorCommunity = 
         Class "Capacitor.Community"
         |+> Static [
+            "BluetoothLe" =? BluetoothLePlugin
+            |> Import "BluetoothLe" "@capacitor-community/bluetooth-le"
             "SafeArea" =? SafeAreaPlugin
             |> Import "SafeArea" "@capacitor-community/safe-area"
             "CameraPreview" =? CameraPreviewPlugin
@@ -2175,6 +2372,8 @@ module Definition =
                 IntercomPlugin
                 SpeechRecognitionPlugin
                 CameraPreviewPlugin
+                SafeAreaPlugin
+                BluetoothLePlugin
             ]
             Namespace "Websharper.Capacitor.Community.FacebookLogin" [
                 FacebookConfiguration; LoginOptions; FacebookLoginResponse; FacebookCurrentAccessTokenResponse; ProfileOptions; AccessToken
@@ -2251,6 +2450,11 @@ module Definition =
             ]
             Namespace "Websharper.Capacitor.Community.SafeArea" [
                 Config; SafeAreaPluginConfig
+            ]
+            Namespace "Websharper.Capacitor.Community.BluetoothLe" [
+                DataViewCallback; StringType; ScanResultType; BooleanType; ScanResult; TimeoutOptions
+                BleService; BleCharacteristic; BleDescriptor; BleCharacteristicProperties; BleDevice
+                RequestBleDeviceOptions; DisplayStrings; InitializeOptions; ConnectionPriority; ScanMode
             ]
         ]
 
