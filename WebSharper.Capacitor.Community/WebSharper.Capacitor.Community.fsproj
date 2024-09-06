@@ -12,6 +12,8 @@
     <NpmDependencies>
 	  <NpmPackage Name="@capacitor-community/screen-brightness" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
 	  <NpmPackage Name="@capacitor-community/text-to-speech" Version="gt= 4.0.1 lt 5.0.0" ResolutionStrategy="Max" />
+	  <NpmPackage Name="@capacitor-community/screen-brightness" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
+	  <NpmPackage Name="@capacitor-community/text-to-speech" Version="gt= 4.0.1 lt 5.0.0" ResolutionStrategy="Max" />
 	  <NpmPackage Name="@capacitor-community/native-audio" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
 	  <NpmPackage Name="@capacitor-community/bluetooth-le" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />
       <NpmPackage Name="@capacitor-community/safe-area" Version="gt= 6.0.0 lt 7.0.0" ResolutionStrategy="Max" />

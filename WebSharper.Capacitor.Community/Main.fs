@@ -2431,10 +2431,49 @@ module Definition =
                 "getBrightness" => T<unit> ^-> T<Promise<_>>[GetBrightnessReturnValue]
             ]
 
+    [<AutoOpen>]
+    module SecurityProvider = 
+        let SecurityProviderStatus =
+            Pattern.EnumStrings "SecurityProviderStatus" [
+                "Success"
+                "NotImplemented"
+                "GooglePlayServicesRepairableException"
+                "GooglePlayServicesNotAvailableException"
+            ]
+
+        let InstallIfNeededReturnValue =
+            Pattern.Config "InstallIfNeededReturnValue" {
+                Required = []
+                Optional = ["status", SecurityProviderStatus.Type]
+            }
+
+        let SecurityProviderPlugin =
+            Class "SecurityProviderPlugin"
+            |+> Instance [
+                "installIfNeeded" => T<unit> ^-> T<Promise<_>>[InstallIfNeededReturnValue]
+            ]
+
+    [<AutoOpen>]
+    module DeviceCheck =
+        let GenerateTokenResult = 
+            Pattern.Config "GenerateTokenResult" {
+                Required = []
+                Optional = ["token", T<string>]
+            }
+
+        let DeviceCheckPlugin =
+            Class "DeviceCheckPlugin"
+            |+> Instance [
+                "generateToken" => T<unit> ^-> T<Promise<_>>[GenerateTokenResult]
+            ]
 
     let CapacitorCommunity = 
         Class "Capacitor.Community"
         |+> Static [
+            "DeviceCheck" =? DeviceCheckPlugin
+            |> Import "DeviceCheck" "@capacitor-community/device-check"
+            "SecurityProvider" =? SecurityProviderPlugin
+            |> Import "SecurityProvider" "@capacitor-community/security-provider"
             "ScreenBrightness" =? ScreenBrightnessPlugin
             |> Import "ScreenBrightness" "@capacitor-community/screen-brightness"
             "TextToSpeech" =? TextToSpeechPlugin
@@ -2514,6 +2553,8 @@ module Definition =
                 NativeAudioPlugin
                 TextToSpeechPlugin
                 ScreenBrightnessPlugin
+                SecurityProviderPlugin
+                DeviceCheckPlugin
             ]
             Namespace "Websharper.Capacitor.Community.FacebookLogin" [
                 FacebookConfiguration; LoginOptions; FacebookLoginResponse; FacebookCurrentAccessTokenResponse; ProfileOptions; AccessToken
@@ -2604,6 +2645,12 @@ module Definition =
             ]
             Namespace "Websharper.Capacitor.Community.ScreenBrightness" [
                 GetBrightnessReturnValue; SetBrightnessOptions
+            ]
+            Namespace "Websharper.Capacitor.Community.SecurityProvider" [
+                InstallIfNeededReturnValue; SecurityProviderStatus
+            ]
+            Namespace "Websharper.Capacitor.Community.DeviceCheck" [
+                GenerateTokenResult
             ]
         ]
 
