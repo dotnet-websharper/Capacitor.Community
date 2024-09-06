@@ -9,7 +9,7 @@
         /* Don't show the not-yet-loaded templates */
         [ws-template], [ws-children-template] { display: none; }
     </style>
-    <script type="text/javascript" src="Content/Capacitor.community.Sample.head.js"></script>
+    <script type="text/javascript" src="Content/WebSharper.Capacitor.Community.Sample.head.js"></script>
 </head>
 <body>
     <h1>My list of unique people</h1>
@@ -22,7 +22,8 @@
             <button ws-onclick="Add">Add</button>
             <div>You are about to add: ${Name}</div>
         </div>
+        <button ws-onclick="TextToSpeech">Speak</button>
     </div>
-    <script type="text/javascript" src="Content/Capacitor.community.Sample.min.js"></script>
+    <script type="module" src="Content/WebSharper.Capacitor.Community.Sample.min.js"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ open WebSharper.JavaScript
 open WebSharper.UI
 open WebSharper.UI.Client
 open WebSharper.UI.Templating
-open Websharper.Capacitor.Community
+open WebSharper.Capacitor.Community
 
 [<JavaScript>]
 module Client =
@@ -19,6 +19,20 @@ module Client =
             "Paul"
         ]
 
+    let TextToSpeech () = promise {
+        let textToSpeech = TextToSpeech.TTSOptions(
+            Text = "This is a sample text.",
+            Lang = "en-US",
+            Rate = 1.0,
+            Pitch = 1.0,
+            Volume = 1.0,
+            Category = "ambient"
+        )
+
+        let! speech = CapacitorCommunity.TextToSpeech.Speak(textToSpeech)
+
+        return speech
+    }     
 
     [<SPAEntryPoint>]
     let Main () =
@@ -34,6 +48,12 @@ module Client =
             .Add(fun _ ->
                 People.Add(newName.Value)
                 newName.Value <- ""
+            )
+            .TextToSpeech(fun _ -> 
+                async {
+                    return! TextToSpeech().Then(fun _ -> printfn "Speak Started").AsAsync()
+                }
+                |> Async.Start
             )
             .Doc()
         |> Doc.RunById "main"

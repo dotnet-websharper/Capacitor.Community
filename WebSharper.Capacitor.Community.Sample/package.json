@@ -1,0 +1,42 @@
+{
+  "name": "websharper.capacitor.community.sample",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2",
+    "vite": "^5.4.3"
+  },
+  "dependencies": {
+    "@capacitor-community/app-icon": "^5.0.0",
+    "@capacitor-community/apple-sign-in": "^6.0.0",
+    "@capacitor-community/background-geolocation": "^1.2.19",
+    "@capacitor-community/bluetooth-le": "^6.0.1",
+    "@capacitor-community/camera-preview": "^6.0.0",
+    "@capacitor-community/contacts": "^6.0.6",
+    "@capacitor-community/date-picker": "^6.0.0",
+    "@capacitor-community/facebook-login": "^6.0.0",
+    "@capacitor-community/file-opener": "^6.0.1",
+    "@capacitor-community/image-to-text": "^6.0.1",
+    "@capacitor-community/in-app-review": "^6.0.0",
+    "@capacitor-community/intercom": "^6.0.0",
+    "@capacitor-community/keep-awake": "^5.0.1",
+    "@capacitor-community/media": "^6.0.0",
+    "@capacitor-community/native-audio": "^6.0.0",
+    "@capacitor-community/photoviewer": "^4.0.1",
+    "@capacitor-community/privacy-screen": "^5.2.1",
+    "@capacitor-community/screen-brightness": "^6.0.0",
+    "@capacitor-community/speech-recognition": "^6.0.1",
+    "@capacitor-community/sqlite": "^6.0.1",
+    "@capacitor-community/stripe": "^6.2.1",
+    "@capacitor-community/text-to-speech": "^4.1.0",
+    "@capacitor-community/volume-buttons": "^6.0.1",
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/core": "^6.1.2"
+  }
+}

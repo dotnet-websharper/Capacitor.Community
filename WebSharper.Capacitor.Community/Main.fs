@@ -2468,7 +2468,7 @@ module Definition =
             ]
 
     let CapacitorCommunity = 
-        Class "Capacitor.Community"
+        Class "CapacitorCommunity"
         |+> Static [
             "DeviceCheck" =? DeviceCheckPlugin
             |> Import "DeviceCheck" "@capacitor-community/device-check"
@@ -2526,9 +2526,11 @@ module Definition =
 
     let Assembly =
         Assembly [
-            Namespace "Websharper.Capacitor.Community" [
+            Namespace "WebSharper.Capacitor.Community" [
+                CapacitorCommunity
                 PermissionState
                 PluginListenerHandle
+
                 FacebookLoginPlugin
                 StripePlugin
                 PrivacyScreenPlugin
@@ -2556,33 +2558,33 @@ module Definition =
                 SecurityProviderPlugin
                 DeviceCheckPlugin
             ]
-            Namespace "Websharper.Capacitor.Community.FacebookLogin" [
+            Namespace "WebSharper.Capacitor.Community.FacebookLogin" [
                 FacebookConfiguration; LoginOptions; FacebookLoginResponse; FacebookCurrentAccessTokenResponse; ProfileOptions; AccessToken
             ]
-            Namespace "Websharper.Capacitor.Community.Stripe" [
+            Namespace "WebSharper.Capacitor.Community.Stripe" [
                 CapacitorStripeContext; PresentPaymentSheetResult; ConfirmPaymentFlowResult; PresentPaymentFlowResult; PresentGooglePayResult
                 StripeURLHandlingOptions; StripeInitializationOptions; CreatePaymentSheetOption; CreatePaymentFlowOption; BillingDetailsCollectionConfiguration
                 CreateGooglePayOption; DidSelectShippingContact; ShippingContact; CreateApplePayOption; ShippingContactType; PaymentSummaryType
                 PaymentFlowResultInterface; AddressCollectionMode; CollectionMode; GooglePayResultInterface; ApplePayResultInterface; PaymentSheetEventsEnum
                 GooglePayEventsEnum; ApplePayEventsEnum; PresentApplePayResult; StyleType; PaymentSheetResultInterface; PaymentFlowEventsEnum
             ]
-            Namespace "Websharper.Capacitor.Community.PrivacyScreen" [
+            Namespace "WebSharper.Capacitor.Community.PrivacyScreen" [
                 PluginsConfig; PrivacyScreenConfig; ContentMode
             ]
-            Namespace "Websharper.Capacitor.Community.KeepAwake" [
+            Namespace "WebSharper.Capacitor.Community.KeepAwake" [
                 IsKeptAwakeResult; IsSupportedResult
             ]
-            Namespace "Websharper.Capacitor.Community.Contacts" [
+            Namespace "WebSharper.Capacitor.Community.Contacts" [
                 PickContactOptions; PickContactResult; DeleteContactOptions; CreateContactOptions; ContactInput; PostalAddressInput; EmailInput
                 PhoneInput; BirthdayInput; OrganizationInput; NameInput; CreateContactResult; GetContactsOptions; GetContactsResult; GetContactOptions
                 GetContactResult; Projection; ContactPayload; ImagePayload; PostalAddressPayload; EmailPayload; PhonePayload; BirthdayPayload
                 OrganizationPayload; NamePayload; PhoneType; EmailType; PostalAddressType; Contacts.PermissionStatus
             ]
-            Namespace "Websharper.Capacitor.Community.DatePicker" [
+            Namespace "WebSharper.Capacitor.Community.DatePicker" [
                 DatePickerResult; DatePickerOptions; DatePickerIosOptions; DatePickerBaseOptions
                 DatePickerIosStyle; DatePickerTheme; DatePickerMode
             ]
-            Namespace "Websharper.Capacitor.Community.SQLite" [
+            Namespace "WebSharper.Capacitor.Community.SQLite" [
                 capSQLiteRunOptions; capSQLiteSetOptions; capSQLiteSet; capSQLiteExecuteOptions; capNCOptions; capNCConnectionOptions
                 capNCDatabasePathOptions; capAllConnectionsOptions; capVersionResult; capSQLiteUrl; capSQLiteChanges; Changes
                 capEchoOptions; capEchoResult; capConnectionOptions; capChangeSecretOptions; capSetSecretOptions; capSQLiteResult
@@ -2591,65 +2593,65 @@ module Definition =
                 JsonIndex; JsonTrigger; JsonColumn; capSQLiteValues; capNCDatabasePathResult; capSQLiteTableOptions; capSQLitePathOptions
                 capSQLiteUpgradeOptions; capSQLiteVersionUpgrade; capSQLiteQueryOptions
             ]
-            Namespace "Websharper.Capacitor.Community.ImageToText" [
+            Namespace "WebSharper.Capacitor.Community.ImageToText" [
                 TextDetections; TextDetection; DetectTextBase64Options; DetectTextFileOptions; ImageOrientation
             ]
-            Namespace "Websharper.Capacitor.Community.FileOpener" [
+            Namespace "WebSharper.Capacitor.Community.FileOpener" [
                 FileOpenerOptions; ChooserPosition
             ]
-            Namespace "Websharper.Capacitor.Community.AppleSignIn" [
+            Namespace "WebSharper.Capacitor.Community.AppleSignIn" [
                 SignInWithAppleOptions; SignInWithAppleResponse; SignInWithAppleResponseData
             ]
-            Namespace "Websharper.Capacitor.Community.BackgroundGeolocation" [
+            Namespace "WebSharper.Capacitor.Community.BackgroundGeolocation" [
                 Location; CallbackError; WatcherOptions; RemoveWatcherOptions; CallbackOptions
             ]
-            Namespace "Websharper.Capacitor.Community.VolumeButtons" [
+            Namespace "WebSharper.Capacitor.Community.VolumeButtons" [
                 Direction; VolumeButtonsResult; GetIsWatchingResult; VolumeButtonsOptions
             ]
-            Namespace "Websharper.Capacitor.Community.Media" [
+            Namespace "WebSharper.Capacitor.Community.Media" [
                 GetMediaByIdentifierOptions; PhotoResponse; MediaFetchOptions; MediaSort; MediaSortKeys
                 MediaSaveOptions; MediaAlbumCreate; MediaAlbumResponse; MediaAlbum; MediaAlbumType
                 MediaPath; MediaResponse; MediaAsset; MediaLocation; MediaTypes; AlbumsPathResponse
             ]
-            Namespace "Websharper.Capacitor.Community.AppIcon" [
+            Namespace "WebSharper.Capacitor.Community.AppIcon" [
                 GetNameResponse; IsSupportedResponse; ResetOptions; IconOptions
             ]
-            Namespace "Websharper.Capacitor.Community.PhotoViewer" [
+            Namespace "WebSharper.Capacitor.Community.PhotoViewer" [
                 CapPaths; CapHttpResult; CapHttpOptions; CapShowResult; CapEchoResult
                 CapShowOptions; ViewerOptions; MovieOptions; Image; CapEchoOptions
             ]
-            Namespace "Websharper.Capacitor.Community.Intercom" [
+            Namespace "WebSharper.Capacitor.Community.Intercom" [
                 IntercomUserUpdateOptions; IntercomPushNotificationData; LogEventOptions
                 RegisterIdentifiedUserOptions; LoadWithKeysOptions
             ]
-            Namespace "Websharper.Capacitor.Community.SpeechRecognition" [
+            Namespace "WebSharper.Capacitor.Community.SpeechRecognition" [
                 PartialResultsResponse; ListeningStateResponse; SupportedLanguagesResponse; ListeningResponse
                 MatchesResponse; AvailableResponse; UtteranceOptions; PermissionStatus
             ]
-            Namespace "Websharper.Capacitor.Community.CameraPreview" [
+            Namespace "WebSharper.Capacitor.Community.CameraPreview" [
                 CameraOpacityOptions; CameraSampleOptions; CameraPreviewPictureOptions; CameraPreviewOptions
             ]
-            Namespace "Websharper.Capacitor.Community.SafeArea" [
+            Namespace "WebSharper.Capacitor.Community.SafeArea" [
                 Config; SafeAreaPluginConfig
             ]
-            Namespace "Websharper.Capacitor.Community.BluetoothLe" [
+            Namespace "WebSharper.Capacitor.Community.BluetoothLe" [
                 DataViewCallback; StringType; ScanResultType; BooleanType; ScanResult; TimeoutOptions
                 BleService; BleCharacteristic; BleDescriptor; BleCharacteristicProperties; BleDevice
                 RequestBleDeviceOptions; DisplayStrings; InitializeOptions; ConnectionPriority; ScanMode
             ]
-            Namespace "Websharper.Capacitor.Community.NativeAudio" [
+            Namespace "WebSharper.Capacitor.Community.NativeAudio" [
                 SetVolumeOptions; PlayOptions; PreloadOptions; ConfigureOptions
             ]
-            Namespace "Websharper.Capacitor.Community.TextToSpeech" [
+            Namespace "WebSharper.Capacitor.Community.TextToSpeech" [
                 SpeechSynthesisVoice; TTSOptions; ListenFuncOptions
             ]
-            Namespace "Websharper.Capacitor.Community.ScreenBrightness" [
+            Namespace "WebSharper.Capacitor.Community.ScreenBrightness" [
                 GetBrightnessReturnValue; SetBrightnessOptions
             ]
-            Namespace "Websharper.Capacitor.Community.SecurityProvider" [
+            Namespace "WebSharper.Capacitor.Community.SecurityProvider" [
                 InstallIfNeededReturnValue; SecurityProviderStatus
             ]
-            Namespace "Websharper.Capacitor.Community.DeviceCheck" [
+            Namespace "WebSharper.Capacitor.Community.DeviceCheck" [
                 GenerateTokenResult
             ]
         ]
