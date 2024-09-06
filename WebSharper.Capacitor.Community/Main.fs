@@ -2301,9 +2301,146 @@ module Definition =
                 "stopNotifications" => T<string>?deviceId * T<string>?service * T<string>?characteristic ^-> T<Promise<unit>>
             ]
 
+    [<AutoOpen>]
+    module NativeAudio = 
+        let ConfigureOptions =
+            Pattern.Config "ConfigureOptions" {
+                Required = []
+                Optional = [
+                    "fade", T<bool>
+                    "focus", T<bool>
+                ]
+            }
+
+        let PreloadOptions =
+            Pattern.Config "PreloadOptions" {
+                Required = []
+                Optional = [
+                    "assetPath", T<string>
+                    "assetId", T<string>
+                    "volume", T<float>
+                    "audioChannelNum", T<int>
+                    "isUrl", T<bool>
+                ]
+            }
+
+        let PlayOptions =
+            Pattern.Config "PlayOptions" {
+                Required = []
+                Optional = [
+                    "assetId", T<string>
+                    "time", T<int>
+                ]
+            }
+
+        let SetVolumeOptions =
+            Pattern.Config "SetVolumeOptions" {
+                Required = []
+                Optional = [
+                    "assetId", T<string>
+                    "volume", T<int>
+                ]
+            }
+
+        let NativeAudioPlugin =
+            Class "NativeAudioPlugin"
+            |+> Instance [
+                "configure" => ConfigureOptions?options ^-> T<Promise<unit>>
+                "preload" => PreloadOptions?options ^-> T<Promise<unit>>
+                "play" => PlayOptions?options ^-> T<Promise<unit>>
+                "pause" => T<string>?options ^-> T<Promise<unit>>
+                "resume" => T<string>?options ^-> T<Promise<unit>>
+                "loop" => T<string>?options ^-> T<Promise<unit>>
+                "stop" => T<string>?options ^-> T<Promise<unit>>
+                "unload" => T<string>?options ^-> T<Promise<unit>>
+                "setVolume" => SetVolumeOptions?options ^-> T<Promise<unit>>
+                "getCurrentTime" => T<string>?options ^-> T<Promise<int>>
+                "getDuration" => T<string>?options ^-> T<Promise<int>>
+                "isPlaying" => T<string>?options ^-> T<Promise<bool>>
+                "addListener" => T<string>?eventName * (T<string>?event ^-> T<unit>)?listenerFunc ^-> T<Promise<_>>[PluginListenerHandle]
+            ]
+
+    [<AutoOpen>]
+    module TextToSpeech = 
+        let SpeechSynthesisVoice =
+            Pattern.Config "SpeechSynthesisVoice" {
+                Required = []
+                Optional = [
+                    "default", T<bool>
+                    "lang", T<string>
+                    "localService", T<bool>
+                    "name", T<string>
+                    "voiceURI", T<string>
+                ]
+            }
+
+        let TTSOptions =
+            Pattern.Config "TTSOptions" {
+                Required = []
+                Optional = [
+                    "text", T<string>
+                    "lang", T<string>
+                    "rate", T<float>
+                    "pitch", T<float>
+                    "volume", T<float>
+                    "voice", T<int>
+                    "category", T<string>
+                ]
+            }
+
+        let ListenFuncOptions = 
+            Pattern.Config "ListenFuncOptions" {
+                Required = []
+                Optional = [
+                    "start", T<int>
+                    "end", T<int>
+                    "spokenWord", T<string>
+                ]
+            }
+
+        let TextToSpeechPlugin =
+            Class "TextToSpeechPlugin"
+            |+> Instance [
+                "speak" => TTSOptions?options ^-> T<Promise<unit>>
+                "stop" => T<unit> ^-> T<Promise<unit>>
+                "getSupportedLanguages" => T<unit> ^-> T<Promise<_>>[!| T<string>]
+                "getSupportedVoices" => T<unit> ^-> T<Promise<_>>[!| SpeechSynthesisVoice]
+                "isLanguageSupported" => T<string>?options ^-> T<Promise<bool>>
+                "openInstall" => T<unit> ^-> T<Promise<unit>>
+                "addListener" => (T<string>?eventName * ListenFuncOptions?info ^-> T<unit>)?listenerFunc ^-> T<Promise<_>>[PluginListenerHandle]
+            ]
+
+    [<AutoOpen>]
+    module ScreenBrightness = 
+        let SetBrightnessOptions =
+            Pattern.Config "SetBrightnessOptions" {
+                Required = []
+                Optional = ["brightness", T<float>]
+            }
+
+        let GetBrightnessReturnValue =
+            Pattern.Config "GetBrightnessReturnValue" {
+                Required = []
+                Optional = ["brightness", T<float>]
+            }
+
+        let ScreenBrightnessPlugin =
+            Class "ScreenBrightnessPlugin"
+            |+> Instance [
+                "setBrightness" => SetBrightnessOptions?options ^-> T<Promise<unit>>
+                "getBrightness" => T<unit> ^-> T<Promise<_>>[GetBrightnessReturnValue]
+            ]
+
+
     let CapacitorCommunity = 
         Class "Capacitor.Community"
         |+> Static [
+            "ScreenBrightness" =? ScreenBrightnessPlugin
+            |> Import "ScreenBrightness" "@capacitor-community/screen-brightness"
+            "TextToSpeech" =? TextToSpeechPlugin
+            |> Import "TextToSpeech" "@capacitor-community/text-to-speech"
+            "NativeAudio" =? NativeAudioPlugin
+            |> Import "NativeAudio" "@capacitor-community/native-audio"
             "BluetoothLe" =? BluetoothLePlugin
             |> Import "BluetoothLe" "@capacitor-community/bluetooth-le"
             "SafeArea" =? SafeAreaPlugin
@@ -2374,6 +2511,7 @@ module Definition =
                 CameraPreviewPlugin
                 SafeAreaPlugin
                 BluetoothLePlugin
+                NativeAudioPlugin
             ]
             Namespace "Websharper.Capacitor.Community.FacebookLogin" [
                 FacebookConfiguration; LoginOptions; FacebookLoginResponse; FacebookCurrentAccessTokenResponse; ProfileOptions; AccessToken
@@ -2455,6 +2593,15 @@ module Definition =
                 DataViewCallback; StringType; ScanResultType; BooleanType; ScanResult; TimeoutOptions
                 BleService; BleCharacteristic; BleDescriptor; BleCharacteristicProperties; BleDevice
                 RequestBleDeviceOptions; DisplayStrings; InitializeOptions; ConnectionPriority; ScanMode
+            ]
+            Namespace "Websharper.Capacitor.Community.NativeAudio" [
+                SetVolumeOptions; PlayOptions; PreloadOptions; ConfigureOptions
+            ]
+            Namespace "Websharper.Capacitor.Community.TextToSpeech" [
+                SpeechSynthesisVoice; TTSOptions; ListenFuncOptions
+            ]
+            Namespace "Websharper.Capacitor.Community.ScreenBrightness" [
+                GetBrightnessReturnValue; SetBrightnessOptions
             ]
         ]
 
