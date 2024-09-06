@@ -2512,6 +2512,8 @@ module Definition =
                 SafeAreaPlugin
                 BluetoothLePlugin
                 NativeAudioPlugin
+                TextToSpeechPlugin
+                ScreenBrightnessPlugin
             ]
             Namespace "Websharper.Capacitor.Community.FacebookLogin" [
                 FacebookConfiguration; LoginOptions; FacebookLoginResponse; FacebookCurrentAccessTokenResponse; ProfileOptions; AccessToken
