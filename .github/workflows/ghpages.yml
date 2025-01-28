@@ -20,7 +20,7 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Install Paket as a .NET Tool
-      run: dotnet tool restore
+        run: dotnet tool restore
   
       - name: Add GitHub registry NuGet source
         shell: cmd
