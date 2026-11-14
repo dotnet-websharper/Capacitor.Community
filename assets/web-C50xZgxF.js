@@ -1,0 +1,1 @@
+import{a as e,d as t}from"./index-D6BPdokp.js";var n=class extends t{async installIfNeeded(){return{status:e.NotImplemented}}};export{n as CapacitorSecurityProviderWeb};

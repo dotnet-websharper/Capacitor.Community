@@ -1,0 +1,1 @@
+import{d as e}from"./index-D6BPdokp.js";var t=class extends e{async isWatching(){throw Error(`VolumeButtons is not supported on web`)}async watchVolume(e,t){throw Error(`VolumeButtons is not supported on web`)}async clearWatch(){throw Error(`VolumeButtons is not supported on web`)}};export{t as VolumeButtonsWeb};

@@ -1,0 +1,1 @@
+import{d as e}from"./index-D6BPdokp.js";var t=class extends e{async generateToken(){return{token:``}}};export{t as CapacitorDeviceCheckWeb};
