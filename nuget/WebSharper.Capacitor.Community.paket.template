@@ -5,10 +5,10 @@ authors
 owners
     IntelliFactory
 repositoryType git
-repositoryUrl https://github.com/dotnet-websharper/capacitor.community/
-licenseUrl https://github.com/dotnet-websharper/capacitor.community/blob/master/LICENSE.md
+repositoryUrl https://github.com/dotnet-websharper/Capacitor.Community/
+licenseUrl https://github.com/dotnet-websharper/Capacitor.Community/blob/main/LICENSE.md
 iconUrl https://github.com/dotnet-websharper/core/raw/websharper50/tools/WebSharper.png
-projectUrl https://github.com/dotnet-websharper/capacitor.community
+projectUrl https://github.com/dotnet-websharper/Capacitor.Community
 description
     WebSharper bindings for community Capacitor plugin
 tags
